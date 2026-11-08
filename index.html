@@ -1053,15 +1053,18 @@ let activeCodeTab = "html";
 ------------------------------------------------------- */
 
 async function loadFavicon() {
+  const faviconURL = "https://base44.app/api/apps/69edbfbe5d6d41c2f8801c53/files/mp/public/69edbfbe5d6d41c2f8801c53/182473fb1_favicon.png";
+  let faviconHref = faviconURL;
+
   try {
-    const response = await fetch("https://base44.app/api/apps/69edbfbe5d6d41c2f8801c53/files/mp/public/69edbfbe5d6d41c2f8801c53/182473fb1_favicon.png", {
+    const response = await fetch(faviconURL, {
       method: "GET",
       mode: "cors",
       cache: "force-cache"
     });
 
     if (!response.ok) {
-      throw new Error(`favicon.png returned HTTP ${response.status}`);
+      throw new Error(`favicon image returned HTTP ${response.status}`);
     }
 
     const imageBlob = await response.blob();
@@ -1070,18 +1073,34 @@ async function loadFavicon() {
       throw new Error("The favicon response was empty or was not an image.");
     }
 
-    // Create and expose a Blob URL, but do not attach it to the document.
-    // You can manually use window.cursedPortalsLibraryFaviconBlobURL later.
+    // Keep the Blob URL available for scripts that need it.
+    if (window.cursedPortalsLibraryFaviconBlobURL) {
+      URL.revokeObjectURL(window.cursedPortalsLibraryFaviconBlobURL);
+    }
     window.cursedPortalsLibraryFaviconBlobURL = URL.createObjectURL(imageBlob);
     window.cursedPortalsLibraryFaviconBlob = imageBlob;
-
-    console.info(
-      "Cursed Portals favicon Blob URL is ready:",
-      window.cursedPortalsLibraryFaviconBlobURL
-    );
+    faviconHref = window.cursedPortalsLibraryFaviconBlobURL;
   } catch (error) {
-    console.error("Unable to prepare the favicon Blob URL:", error);
+    // The direct image URL still works as a favicon if the host blocks CORS.
+    console.warn("Could not create a favicon Blob URL; using the image URL directly.", error);
+    window.cursedPortalsLibraryFaviconBlobURL = null;
+    window.cursedPortalsLibraryFaviconBlob = null;
   }
+
+  // Create or update the actual browser favicon tag.
+  let faviconLink = document.querySelector('link[rel~="icon"]');
+  if (!faviconLink) {
+    faviconLink = document.createElement("link");
+    faviconLink.rel = "icon";
+    document.head.appendChild(faviconLink);
+  }
+
+  faviconLink.type = "image/png";
+  faviconLink.href = faviconHref;
+  faviconLink.setAttribute("sizes", "32x32");
+  faviconLink.setAttribute("data-cursed-portals-favicon", "true");
+
+  console.info("Cursed Portals browser favicon is set:", faviconHref);
 }
 /* -------------------------------------------------------
    Helpers
