@@ -1,0 +1,2418 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100d18">
+<title>Cursed Portals — A home for creators and community</title>
+<meta name="description" content="Discover independent projects, creative work, tools, experiments and the people behind them.">
+
+<script>
+/*
+ * Cursed Portals library favicon
+ * Fetch the original PNG, turn it into a Blob, and install a blob: URL.
+ * No Base64/data URL conversion and no generated replacement artwork.
+ */
+(async function installLibraryFavicon() {
+  const imageURL = "https://base44.app/api/apps/69edbfbe5d6d41c2f8801c53/files/mp/public/69edbfbe5d6d41c2f8801c53/182473fb1_favicon.png";
+
+  try {
+    const response = await fetch(imageURL, {
+      method: "GET",
+      mode: "cors",
+      cache: "force-cache"
+    });
+
+    if (!response.ok) {
+      throw new Error("Favicon request failed with HTTP " + response.status);
+    }
+
+    const imageBlob = await response.blob();
+
+    if (!imageBlob.size || !imageBlob.type.startsWith("image/")) {
+      throw new Error("The favicon response was empty or was not an image.");
+    }
+
+    const blobURL = URL.createObjectURL(imageBlob);
+
+    let icon = document.querySelector('link[rel~="icon"]');
+
+    if (!icon) {
+      icon = document.createElement("link");
+      icon.rel = "icon";
+      document.head.appendChild(icon);
+    }
+
+    icon.type = imageBlob.type;
+    icon.href = blobURL;
+
+    console.info("Cursed Portals favicon installed using Blob URL.");
+  } catch (error) {
+    console.error("Could not install the Cursed Portals favicon:", error);
+  }
+})();
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg: #100d18;
+  --surface: #171321;
+  --surface-2: #201a2c;
+  --surface-3: #292237;
+  --border: rgba(255,255,255,.09);
+  --text: #f5f0fc;
+  --muted: #aaa0b9;
+  --purple: #ad7aff;
+  --purple-2: #8750d4;
+  --cyan: #73dce3;
+  --green: #83d6a5;
+  --red: #ff7b85;
+  --radius: 18px;
+  --max: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(132,76,190,.16), transparent 35%),
+    radial-gradient(ellipse at 92% 24%, rgba(57,147,166,.08), transparent 28%),
+    var(--bg);
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+.wrap {
+  width: min(var(--max), calc(100% - 42px));
+  margin: auto;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.eyebrow:before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  background: var(--cyan);
+}
+
+.gradient {
+  background: linear-gradient(100deg, #c09aff, #77dce3);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* HEADER */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(16,13,24,.87);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(173,122,255,.45), inset 0 0 10px rgba(173,122,255,.3);
+}
+
+.logo span {
+  color: var(--purple);
+}
+
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 23px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.navlinks a:hover {
+  color: white;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.035);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(173,122,255,.5);
+}
+
+.btn.primary {
+  background: linear-gradient(110deg, #8750d4, #b27bff);
+  border-color: transparent;
+  color: white;
+}
+
+.btn.small {
+  padding: 8px 12px;
+  font-size: 11px;
+}
+
+.btn.danger {
+  color: #ffc0c4;
+  border-color: rgba(255,123,133,.25);
+  background: rgba(255,123,133,.07);
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 555px;
+  display: grid;
+  grid-template-columns: 1.08fr .92fr;
+  align-items: center;
+  gap: 35px;
+  padding-top: 65px;
+  padding-bottom: 70px;
+}
+
+.hero-copy h1 {
+  max-width: 700px;
+  margin: 18px 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(43px, 6.3vw, 74px);
+  letter-spacing: -3.5px;
+  line-height: 1.03;
+}
+
+.hero-copy p {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  color: #958ba5;
+  font-size: 11px;
+}
+
+.hero-meta span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hero-meta i {
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.hero-visual {
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  background: rgba(151,91,227,.17);
+  filter: blur(75px);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.portal-art {
+  width: 235px;
+  height: 340px;
+  position: relative;
+  border: 9px solid #b17aff;
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  background: radial-gradient(ellipse, rgba(109,220,229,.25), rgba(112,66,173,.18) 48%, transparent 75%);
+  box-shadow: 0 0 22px #a66bff, 0 0 65px rgba(166,107,255,.55), inset 0 0 30px rgba(89,229,233,.35);
+  animation: portalPulse 4s ease-in-out infinite;
+}
+
+.portal-art:before {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border: 3px solid rgba(115,220,227,.8);
+  border-radius: 50%;
+  box-shadow: 0 0 25px rgba(115,220,227,.55);
+}
+
+.portal-art:after {
+  content: "";
+  position: absolute;
+  inset: 35px 25px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(115,220,227,.2), rgba(133,75,200,.15), transparent);
+  filter: blur(9px);
+}
+
+@keyframes portalPulse {
+  0%,100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(-8deg) scale(1.04); }
+}
+
+.float-card {
+  position: absolute;
+  padding: 12px 15px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 12px;
+  background: rgba(29,23,41,.9);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 35px rgba(0,0,0,.3);
+  font-size: 11px;
+}
+
+.float-card strong {
+  display: block;
+  color: white;
+  font-size: 12px;
+}
+
+.float-card span {
+  color: var(--muted);
+}
+
+.float-one {
+  top: 42px;
+  left: 0;
+}
+
+.float-two {
+  top: 170px;
+  right: -3px;
+}
+
+.float-three {
+  bottom: 40px;
+  left: 20px;
+}
+
+/* SECTIONS */
+
+.section {
+  padding: 75px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.section-head h2 {
+  margin: 9px 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(28px, 4vw, 39px);
+  line-height: 1.15;
+}
+
+.section-head p {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* EXPLORE BAND */
+
+.feature-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(115deg, rgba(139,85,205,.14), rgba(70,163,170,.07));
+}
+
+.feature-band h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 27px;
+  margin-bottom: 10px;
+}
+
+.feature-band p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.mini-card {
+  padding: 17px 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: rgba(15,12,23,.55);
+}
+
+.mini-card .symbol {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.mini-card strong {
+  display: block;
+  font-size: 12px;
+}
+
+.mini-card p {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+/* LIBRARY */
+
+.library-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.searchbox {
+  flex: 1;
+  position: relative;
+}
+
+.searchbox input,
+.library-tools select,
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 13px;
+  outline: none;
+  font-size: 12px;
+}
+
+.searchbox input:focus,
+.library-tools select:focus,
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--purple);
+}
+
+.library-tools select {
+  width: 155px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.025);
+  color: var(--muted);
+  border-radius: 99px;
+  padding: 7px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.chip:hover,
+.chip.active {
+  color: white;
+  border-color: rgba(173,122,255,.55);
+  background: rgba(173,122,255,.12);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.project-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1b1626, #14111d);
+  transition: .2s;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(173,122,255,.4);
+}
+
+.project-cover {
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(142,83,210,.3), transparent 70%),
+    linear-gradient(135deg, #282039, #171321);
+}
+
+.project-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-cover .placeholder {
+  font-size: 42px;
+  opacity: .8;
+}
+
+.project-body {
+  padding: 17px;
+}
+
+.project-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.category-label {
+  color: var(--cyan);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.project-body h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 17px;
+  margin-bottom: 7px;
+  overflow-wrap: anywhere;
+}
+
+.project-body > p {
+  min-height: 45px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.summary-line {
+  color: #d6c9e8 !important;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+.project-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 15px;
+  padding-top: 13px;
+}
+
+.project-author {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.project-content {
+  margin-top: 14px;
+}
+
+.project-preview-frame {
+  width: 100%;
+  min-height: 260px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+}
+
+.project-content pre {
+  max-height: 350px;
+  overflow: auto;
+  padding: 14px;
+  border-radius: 10px;
+  background: #0b0911;
+  color: #d7c7ef;
+  font-size: 11px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  grid-column: 1/-1;
+  padding: 45px 20px;
+  text-align: center;
+  border: 1px dashed rgba(255,255,255,.16);
+  border-radius: 15px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.empty strong {
+  display: block;
+  color: var(--text);
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.notice {
+  color: #8f849e;
+  font-size: 10px;
+  margin-top: 14px;
+}
+
+/* CREATORS */
+
+.creator-band {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 30px;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(110deg, rgba(112,73,157,.16), rgba(50,130,139,.08));
+}
+
+.creator-band h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 29px;
+  margin: 8px 0;
+}
+
+.creator-band p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.creator-points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 11px;
+}
+
+.creator-point {
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(16,13,24,.55);
+  font-size: 11px;
+  color: #d6cde1;
+}
+
+/* SUPPORT */
+
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+}
+
+.support-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+}
+
+.support-card .symbol {
+  font-size: 24px;
+  margin-bottom: 11px;
+}
+
+.support-card h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.support-card p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.support-panel {
+  margin-top: 18px;
+  padding: 27px;
+  border: 1px solid rgba(173,122,255,.24);
+  border-radius: 17px;
+  background: rgba(128,78,181,.09);
+}
+
+.support-panel h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.support-panel p {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ABOUT */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 15px;
+}
+
+.about-box {
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--surface);
+}
+
+.about-box h3 {
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 10px;
+}
+
+.about-box p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.about-box ul {
+  padding-left: 17px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.about-box li {
+  margin: 6px 0;
+}
+
+/* FOOTER */
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 30px 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* MODALS */
+
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(5,4,9,.8);
+  backdrop-filter: blur(8px);
+  overflow-y: auto;
+}
+
+.modal {
+  width: min(620px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #191422;
+  box-shadow: 0 25px 100px rgba(0,0,0,.5);
+}
+
+.modal.wide {
+  width: min(850px, 100%);
+}
+
+.modal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 17px;
+}
+
+.modal-top h2 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+}
+
+.close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: rgba(255,255,255,.04);
+  cursor: pointer;
+}
+
+.modal > p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 17px;
+}
+
+.field {
+  margin: 13px 0;
+}
+
+.field label {
+  display: block;
+  color: #d8cfe3;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.field textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.field select option {
+  background: #191422;
+}
+
+.field-help {
+  color: #8e849c;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.check-row {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: #d8cfe3;
+  font-size: 11px;
+  margin: 12px 0;
+}
+
+.check-row input {
+  accent-color: var(--purple);
+}
+
+.status {
+  min-height: 18px;
+  color: var(--cyan);
+  font-size: 11px;
+  margin: 9px 0;
+}
+
+.status.error {
+  color: var(--red);
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.auth-tab.active {
+  color: white;
+  background: rgba(173,122,255,.15);
+  border-color: var(--purple);
+}
+
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  max-width: min(390px, calc(100% - 40px));
+  padding: 13px 17px;
+  border: 1px solid rgba(173,122,255,.3);
+  border-radius: 12px;
+  background: #211a2d;
+  color: white;
+  font-size: 12px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: .2s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    min-height: 350px;
+  }
+
+  .feature-band,
+  .creator-band {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .navlinks {
+    gap: 12px;
+  }
+}
+
+@media(max-width: 650px) {
+  .wrap {
+    width: calc(100% - 30px);
+  }
+
+  .nav {
+    padding: 13px 0;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navlinks {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .nav-actions {
+    width: 100%;
+  }
+
+  .hero-copy h1 {
+    font-size: 47px;
+    letter-spacing: -2px;
+  }
+
+  .hero-visual {
+    min-height: 320px;
+  }
+
+  .portal-art {
+    width: 190px;
+    height: 280px;
+  }
+
+  .float-card {
+    padding: 9px;
+    font-size: 9px;
+  }
+
+  .float-card strong {
+    font-size: 10px;
+  }
+
+  .section {
+    padding: 55px 0;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .feature-cards,
+  .grid,
+  .support-grid,
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .creator-points {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .library-tools {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .library-tools select {
+    width: 100%;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(prefers-reduced-motion: reduce) {
+  *, *:before, *:after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="logo" href="#home">
+      <span class="logo-mark"></span>
+      CURSED <span>PORTALS</span>
+    </a>
+
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#explore">Explore</a>
+      <a href="#library">Library</a>
+      <a href="#creators">Creators</a>
+      <a href="#support">Support</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn small" id="accountButton" type="button">Sign in</button>
+      <button class="btn primary small" id="publishButton" type="button" hidden>+ Create project</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="wrap hero" id="home">
+  <div class="hero-copy">
+    <div class="eyebrow">A creative community platform</div>
+    <h1>A home for <span class="gradient">things worth creating.</span></h1>
+    <p>
+      Discover independent projects, creative work, tools, experiments
+      and the people behind them. Cursed Portals gives creators a place
+      to share what they make and communities a way to help it grow.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn primary" href="#library">Explore the library ↗</a>
+      <a class="btn" href="#creators">For creators</a>
+    </div>
+
+    <div class="hero-meta">
+      <span><i></i> Free to explore</span>
+      <span><i></i> Community-powered</span>
+      <span><i></i> Many kinds of projects</span>
+    </div>
+  </div>
+
+  <div class="hero-visual" aria-label="Decorative portal artwork">
+    <div class="hero-glow"></div>
+    <div class="portal-art"></div>
+
+    <div class="float-card float-one">
+      <strong>Discover projects</strong>
+      <span>Ideas, tools and creations</span>
+    </div>
+
+    <div class="float-card float-two">
+      <strong>Support creators</strong>
+      <span>Without memberships or payments</span>
+    </div>
+
+    <div class="float-card float-three">
+      <strong>Build together</strong>
+      <span>Feedback, testing and collaboration</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="explore">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Explore the platform</div>
+        <h2>Not just a download page.</h2>
+        <p>
+          A shared space for projects and the people who care about them.
+          Discover work, follow its progress and find ways to contribute.
+        </p>
+      </div>
+    </div>
+
+    <div class="feature-band">
+      <div>
+        <h2>Explore ideas. Follow their journey.</h2>
+        <p>
+          From Minecraft mods and software to art, experiments,
+          documentation and community projects, the library is designed
+          to make room for different kinds of creative work.
+        </p>
+      </div>
+
+      <div class="feature-cards">
+        <article class="mini-card">
+          <div class="symbol">⌕</div>
+          <strong>Discover</strong>
+          <p>Find projects and new ideas.</p>
+        </article>
+
+        <article class="mini-card">
+          <div class="symbol">♡</div>
+          <strong>Appreciate</strong>
+          <p>Show creators their work matters.</p>
+        </article>
+
+        <article class="mini-card">
+          <div class="symbol">↗</div>
+          <strong>Share</strong>
+          <p>Help good work reach people.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="library">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Discover something new</div>
+        <h2>Project library</h2>
+        <p>
+          Browse public projects, creative experiments, tools and resources
+          shared by approved creators.
+        </p>
+      </div>
+    </div>
+
+    <div class="library-tools">
+      <label class="searchbox">
+        <input id="searchInput" type="search" placeholder="Search projects, descriptions..." aria-label="Search projects">
+      </label>
+
+      <select id="sortSelect" aria-label="Sort projects">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="az">Title A–Z</option>
+      </select>
+    </div>
+
+    <div class="chips" id="categoryFilters">
+      <button class="chip active" data-category="all" type="button">All projects</button>
+    </div>
+
+    <div class="grid" id="projectGrid">
+      <div class="empty">
+        <strong>Opening the library…</strong>
+        Fetching published projects.
+      </div>
+    </div>
+
+    <p class="notice">
+      Projects shown here are retrieved from the Cursed Portals API.
+      Only public, published projects are displayed. Projects are added
+      manually by authorized publishers.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="creators">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The people behind the work</div>
+        <h2>For creators, not just content</h2>
+        <p>
+          A platform where projects have room to develop, and creators
+          can connect with people who want to help.
+        </p>
+      </div>
+    </div>
+
+    <div class="creator-band">
+      <div>
+        <div class="eyebrow">Create something</div>
+        <h2>Have something you're building?</h2>
+        <p>
+          The platform is designed for its owner, admins and approved
+          creators to publish and manage projects. Public exploration
+          and access to published content remain free.
+        </p>
+        <p class="notice">
+          Publishing is permission-controlled. Signing up does not
+          automatically grant publishing privileges.
+        </p>
+      </div>
+
+      <div class="creator-points">
+        <div class="creator-point">✦ Share projects and updates</div>
+        <div class="creator-point">✦ Build a following</div>
+        <div class="creator-point">✦ Gather useful feedback</div>
+        <div class="creator-point">✦ Find collaborators</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="support">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Support without a price tag</div>
+        <h2>Support creators.<br><span class="gradient">No money required.</span></h2>
+        <p>
+          Not every meaningful contribution needs to be financial.
+          Help creators by sharing knowledge, attention, time and feedback.
+        </p>
+      </div>
+    </div>
+
+    <div class="support-grid">
+      <article class="support-card">
+        <div class="symbol">♡</div>
+        <h3>Appreciate</h3>
+        <p>Give projects a sign of encouragement and recognition.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="symbol">↗</div>
+        <h3>Spread the word</h3>
+        <p>Share projects with people who might enjoy or need them.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="symbol">✎</div>
+        <h3>Give feedback</h3>
+        <p>Offer constructive suggestions that help work improve.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="symbol">⚑</div>
+        <h3>Test and report</h3>
+        <p>Help identify bugs, problems and opportunities for improvement.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="symbol">⌘</div>
+        <h3>Collaborate</h3>
+        <p>Contribute skills, documentation, translations or ideas.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="symbol">✧</div>
+        <h3>Recognize effort</h3>
+        <p>Celebrate the people who make useful and creative things.</p>
+      </article>
+    </div>
+
+    <div class="support-panel">
+      <h3>Creators can ask for the help they actually need.</h3>
+      <p>
+        Projects can explain what kind of support would be useful:
+        testing, feedback, documentation, translation, design,
+        collaboration or something else. Support should be voluntary,
+        transparent and relevant to the project.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">About Cursed Portals</div>
+        <h2>One home. Many kinds of work.</h2>
+        <p>
+          Cursed Portals is intended to be a community platform for
+          independent projects and creative work, not a platform limited
+          to one game or one type of content.
+        </p>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <article class="about-box">
+        <h3>Our approach</h3>
+        <p>
+          The platform focuses on discovery, community participation
+          and creator ownership. It is designed to give projects a
+          public home and make it easier for people to contribute
+          in practical, meaningful ways.
+        </p>
+      </article>
+
+      <article class="about-box">
+        <h3>Publishing and community standards</h3>
+        <ul>
+          <li>Publishing is limited to authorized accounts.</li>
+          <li>Admins retain their administrative permissions.</li>
+          <li>Project owners manage their own work according to permissions.</li>
+          <li>Visitors can explore public projects.</li>
+          <li>Visitors cannot delete other people's projects.</li>
+          <li>Projects are not automatically published.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>
+      <strong style="color:white;">CURSED PORTALS</strong>
+      <p>A home for creators and community.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#explore">Explore</a>
+      <a href="#library">Library</a>
+      <a href="#creators">Creators</a>
+      <a href="#support">Support</a>
+      <a href="#about">About</a>
+    </div>
+
+    <div>© <span id="year"></span> Cursed Portals</div>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+
+<div class="modal-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="eyebrow">Your account</div>
+        <h2 id="authTitle">Sign in</h2>
+      </div>
+      <button class="close" id="authClose" type="button" aria-label="Close">✕</button>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" type="button">Sign in</button>
+      <button class="auth-tab" id="signupTab" type="button">Create account</button>
+    </div>
+
+    <form id="authForm">
+      <div class="field">
+        <label for="authEmail">Email address</label>
+        <input id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters">
+      </div>
+
+      <div class="field" id="confirmPasswordField" hidden>
+        <label for="authPasswordConfirm">Confirm password</label>
+        <input id="authPasswordConfirm" type="password" autocomplete="new-password" minlength="8" placeholder="Enter your password again">
+      </div>
+
+      <button class="btn primary" id="authSubmit" type="submit" style="width:100%">Sign in</button>
+    </form>
+
+    <button class="btn small" id="forgotPassword" type="button" style="margin-top:12px">Forgot password?</button>
+    <p class="status" id="authStatus" role="status"></p>
+  </div>
+</div>
+
+<!-- ADMIN PROJECT CREATION MODAL -->
+
+<div class="modal-backdrop" id="createProjectModal" role="dialog" aria-modal="true" aria-labelledby="createProjectTitle">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="eyebrow">Administrator publishing</div>
+        <h2 id="createProjectTitle">Create a project</h2>
+      </div>
+      <button class="close" id="createProjectClose" type="button" aria-label="Close">✕</button>
+    </div>
+
+    <p>Publish a project to the Cursed Portals library, or save it as a draft.</p>
+
+    <form id="createProjectForm">
+      <div class="field">
+        <label for="projectTitleInput">Project name</label>
+        <input id="projectTitleInput" maxlength="120" required placeholder="Your project name">
+      </div>
+
+      <div class="field">
+        <label for="projectSlugInput">URL slug (optional)</label>
+        <input id="projectSlugInput" maxlength="90" placeholder="generated-from-project-name">
+      </div>
+
+      <div class="field">
+        <label for="projectDescriptionInput">Description</label>
+        <textarea id="projectDescriptionInput" rows="5" maxlength="10000" placeholder="What is this project about?"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="projectSummaryInput">Summary line</label>
+        <input id="projectSummaryInput" maxlength="180" placeholder="A short sentence shown on project cards and search results.">
+      </div>
+
+      <div class="field">
+        <label for="projectContentType">Project page format</label>
+        <select id="projectContentType">
+          <option value="plain">Plain text</option>
+          <option value="rich">Rich text / HTML</option>
+          <option value="code">HTML + CSS + JavaScript preview</option>
+        </select>
+        <p class="field-help">Code previews are displayed inside a sandboxed iframe.</p>
+      </div>
+
+      <div id="plainContentFields">
+        <div class="field">
+          <label for="projectPlainContent">Project content</label>
+          <textarea id="projectPlainContent" rows="7" maxlength="500000" placeholder="Write your project content here..."></textarea>
+        </div>
+      </div>
+
+      <div id="richContentFields" hidden>
+        <div class="field">
+          <label for="projectRichContent">Rich text / HTML content</label>
+          <textarea id="projectRichContent" rows="10" maxlength="500000" placeholder="Write or paste your rich content here..."></textarea>
+          <p class="field-help">This content is displayed as a sandboxed preview.</p>
+        </div>
+      </div>
+
+      <div id="codeContentFields" hidden>
+        <div class="field">
+          <label for="projectCodeHtml">HTML</label>
+          <textarea id="projectCodeHtml" rows="7" maxlength="500000" placeholder="<h1>Your project</h1>"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="projectCodeCss">CSS</label>
+          <textarea id="projectCodeCss" rows="6" maxlength="500000" placeholder="body { font-family: sans-serif; }"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="projectCodeJs">JavaScript</label>
+          <textarea id="projectCodeJs" rows="6" maxlength="500000" placeholder="console.log('Hello!');"></textarea>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="projectCategoryInput">Category</label>
+          <select id="projectCategoryInput">
+            <option value="">No category</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="projectVisibilityInput">Visibility</label>
+          <select id="projectVisibilityInput">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="projectCoverInput">Cover image URL (optional)</label>
+        <input id="projectCoverInput" type="url" placeholder="https://example.com/image.png">
+      </div>
+
+      <label class="check-row">
+        <input id="projectPublishInput" type="checkbox">
+        Publish immediately
+      </label>
+
+      <p class="field-help">
+        If unchecked, the project is saved as a draft. Publishing is an
+        explicit action and is never triggered automatically.
+      </p>
+
+      <p class="status" id="createProjectStatus" role="status"></p>
+
+      <button class="btn primary" id="createProjectSubmit" type="submit" style="width:100%">
+        Create project
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  /*
+   * Cursed Portals API configuration.
+   * The browser communicates with the Cloudflare Worker only.
+   * Supabase credentials are never placed in this page.
+   */
+  const API_BASE = "https://sparkling-feather-1f7c.lucas-necel.workers.dev";
+
+  const $ = selector => document.querySelector(selector);
+
+  const state = {
+    session: null,
+    profile: null,
+    projects: [],
+    categories: [],
+    selectedCategory: "all",
+    authMode: "login",
+    currentProject: null
+  };
+
+  function safeText(value, fallback = "") {
+    return typeof value === "string" ? value : fallback;
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function showToast(message) {
+    const toast = $("#toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3500);
+  }
+
+  function setStatus(selector, message, isError = false) {
+    const element = $(selector);
+    if (!element) return;
+
+    element.textContent = message;
+    element.classList.toggle("error", isError);
+  }
+
+  function saveSession(session) {
+    state.session = session;
+
+    if (session) {
+      sessionStorage.setItem("cp_worker_session", JSON.stringify(session));
+    } else {
+      sessionStorage.removeItem("cp_worker_session");
+      state.profile = null;
+    }
+
+    refreshAccountUI();
+  }
+
+  function normalizeSession(data) {
+    const source = data?.session || data?.data?.session || data?.data || data;
+
+    if (!source?.access_token || !source?.refresh_token) {
+      return null;
+    }
+
+    return {
+      access_token: source.access_token,
+      refresh_token: source.refresh_token,
+      expires_at: source.expires_at || (
+        source.expires_in
+          ? Math.floor(Date.now() / 1000) + Number(source.expires_in)
+          : null
+      ),
+      token_type: source.token_type || "bearer"
+    };
+  }
+
+  async function workerFetch(path, options = {}, authenticated = true) {
+    const headers = {
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    };
+
+    if (authenticated && state.session?.access_token) {
+      headers.Authorization = "Bearer " + state.session.access_token;
+    }
+
+    const response = await fetch(API_BASE + path, {
+      ...options,
+      headers
+    });
+
+    const raw = await response.text();
+    let data = {};
+
+    try {
+      data = raw ? JSON.parse(raw) : {};
+    } catch {
+      data = { message: raw };
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.error || data.message || `Request failed (${response.status})`
+      );
+    }
+
+    return data;
+  }
+
+  async function apiGet(path) {
+    return workerFetch(path, { method: "GET" }, false);
+  }
+
+  async function apiRequest(path, options) {
+    return workerFetch(path, options, true);
+  }
+
+  function getArray(data) {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.data)) return data.data;
+    if (Array.isArray(data?.projects)) return data.projects;
+    if (Array.isArray(data?.categories)) return data.categories;
+    return [];
+  }
+
+  function profileIsAdmin(profile) {
+    return profile?.role === "admin" ||
+      profile?.is_admin === true ||
+      profile?.admin === true;
+  }
+
+  function refreshAccountUI() {
+    const accountButton = $("#accountButton");
+    const publishButton = $("#publishButton");
+
+    if (!state.session) {
+      accountButton.textContent = "Sign in";
+      publishButton.hidden = true;
+      return;
+    }
+
+    const email = state.profile?.email || "Account";
+    accountButton.textContent = email.length > 22
+      ? email.slice(0, 19) + "…"
+      : email;
+
+    /*
+     * Keep the admin check based on the authenticated profile.
+     * The server must still enforce admin permission on POST /api/projects.
+     */
+    publishButton.hidden = !profileIsAdmin(state.profile);
+  }
+
+  async function loadMyProfile() {
+    if (!state.session) return;
+
+    const result = await workerFetch("/api/me", { method: "GET" });
+
+    state.profile = result.profile || result.data?.profile || result;
+    refreshAccountUI();
+  }
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = "flex";
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.style.display = "none";
+  }
+
+  $("#accountButton").addEventListener("click", () => {
+    if (state.session) {
+      const confirmed = confirm("Sign out of Cursed Portals?");
+      if (!confirmed) return;
+
+      workerFetch("/api/auth/logout", {
+        method: "POST",
+        body: JSON.stringify({
+          refresh_token: state.session.refresh_token
+        })
+      }).catch(() => {}).finally(() => {
+        saveSession(null);
+        showToast("You have been signed out.");
+      });
+
+      return;
+    }
+
+    setAuthMode("login");
+    openModal("authModal");
+  });
+
+  $("#authClose").addEventListener("click", () => closeModal("authModal"));
+  $("#createProjectClose").addEventListener("click", () => closeModal("createProjectModal"));
+
+  document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
+    backdrop.addEventListener("click", event => {
+      if (event.target === backdrop) {
+        backdrop.style.display = "none";
+      }
+    });
+  });
+
+  function setAuthMode(mode) {
+    state.authMode = mode;
+
+    const signup = mode === "signup";
+
+    $("#loginTab").classList.toggle("active", !signup);
+    $("#signupTab").classList.toggle("active", signup);
+
+    $("#authTitle").textContent = signup ? "Create account" : "Sign in";
+    $("#authSubmit").textContent = signup ? "Create account" : "Sign in";
+    $("#confirmPasswordField").hidden = !signup;
+
+    $("#authPassword").autocomplete = signup ? "new-password" : "current-password";
+    $("#authPasswordConfirm").required = signup;
+
+    setStatus("#authStatus", "");
+  }
+
+  $("#loginTab").addEventListener("click", () => setAuthMode("login"));
+  $("#signupTab").addEventListener("click", () => setAuthMode("signup"));
+
+  $("#authForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const email = $("#authEmail").value.trim();
+    const password = $("#authPassword").value;
+    const signup = state.authMode === "signup";
+
+    if (signup && password !== $("#authPasswordConfirm").value) {
+      setStatus("#authStatus", "The passwords do not match.", true);
+      return;
+    }
+
+    const submit = $("#authSubmit");
+    submit.disabled = true;
+    setStatus("#authStatus", signup ? "Creating your account…" : "Signing in…");
+
+    try {
+      const result = await workerFetch(
+        signup ? "/api/auth/signup" : "/api/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password })
+        },
+        false
+      );
+
+      const session = normalizeSession(result);
+
+      if (session) {
+        saveSession(session);
+        await loadMyProfile();
+        closeModal("authModal");
+        showToast(signup ? "Account created successfully." : "Welcome back!");
+      } else if (signup) {
+        setStatus("#authStatus", "Account created. Check your email to confirm it, then sign in.");
+      } else {
+        throw new Error("Worker did not return a login session. Check its authentication route.");
+      }
+    } catch (error) {
+      setStatus("#authStatus", error.message || "Authentication failed.", true);
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  $("#forgotPassword").addEventListener("click", async () => {
+    const email = $("#authEmail").value.trim();
+
+    if (!email) {
+      setStatus("#authStatus", "Enter your email address first.", true);
+      return;
+    }
+
+    try {
+      await workerFetch("/api/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          redirect_to: location.href.split("#")[0]
+        })
+      }, false);
+
+      setStatus("#authStatus", "Password reset email requested. Check your inbox.");
+    } catch (error) {
+      setStatus("#authStatus", error.message, true);
+    }
+  });
+
+  $("#publishButton").addEventListener("click", () => {
+    if (!state.session || !profileIsAdmin(state.profile)) {
+      showToast("Administrator permission is required to publish projects.");
+      return;
+    }
+
+    populateProjectCategories();
+    openModal("createProjectModal");
+  });
+
+  function populateProjectCategories() {
+    const select = $("#projectCategoryInput");
+    const current = select.value;
+
+    select.innerHTML = '<option value="">No category</option>';
+
+    state.categories.forEach(category => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      select.append(option);
+    });
+
+    select.value = current;
+  }
+
+  $("#projectContentType").addEventListener("change", () => {
+    const type = $("#projectContentType").value;
+
+    $("#plainContentFields").hidden = type !== "plain";
+    $("#richContentFields").hidden = type !== "rich";
+    $("#codeContentFields").hidden = type !== "code";
+  });
+
+  function slugify(value) {
+    return String(value || "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 90);
+  }
+
+  $("#projectTitleInput").addEventListener("input", () => {
+    const slugInput = $("#projectSlugInput");
+
+    if (!slugInput.dataset.edited) {
+      slugInput.value = slugify($("#projectTitleInput").value);
+    }
+  });
+
+  $("#projectSlugInput").addEventListener("input", () => {
+    $("#projectSlugInput").dataset.edited = "true";
+  });
+
+  $("#createProjectForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!state.session || !profileIsAdmin(state.profile)) {
+      setStatus("#createProjectStatus", "Administrator permission is required.", true);
+      return;
+    }
+
+    const submit = $("#createProjectSubmit");
+    submit.disabled = true;
+    submit.textContent = "Creating…";
+
+    const type = $("#projectContentType").value;
+
+    const payload = {
+      title: $("#projectTitleInput").value.trim(),
+      slug: $("#projectSlugInput").value.trim() || slugify($("#projectTitleInput").value),
+      description: $("#projectDescriptionInput").value.trim(),
+      summary_line: $("#projectSummaryInput").value.trim(),
+      content_type: type,
+      content: type === "plain" ? $("#projectPlainContent").value : "",
+      content_html: type === "rich"
+        ? $("#projectRichContent").value
+        : type === "code"
+          ? $("#projectCodeHtml").value
+          : "",
+      content_css: type === "code" ? $("#projectCodeCss").value : "",
+      content_js: type === "code" ? $("#projectCodeJs").value : "",
+      category_id: $("#projectCategoryInput").value || null,
+      visibility: $("#projectVisibilityInput").value,
+      cover_image_url: $("#projectCoverInput").value.trim(),
+      is_published: $("#projectPublishInput").checked
+    };
+
+    try {
+      const result = await apiRequest("/api/projects", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      setStatus("#createProjectStatus", "Project created successfully.");
+      showToast(payload.is_published ? "Project published!" : "Project saved as a draft.");
+
+      $("#createProjectForm").reset();
+      $("#projectContentType").dispatchEvent(new Event("change"));
+      $("#projectSlugInput").dataset.edited = "";
+      closeModal("createProjectModal");
+
+      await initialize();
+    } catch (error) {
+      setStatus("#createProjectStatus", error.message || "Project creation failed.", true);
+      showToast(error.message || "Project creation failed.");
+    } finally {
+      submit.disabled = false;
+      submit.textContent = "Create project";
+    }
+  });
+
+  function renderProject(project) {
+    const card = document.createElement("article");
+    card.className = "project-card";
+
+    const cover = document.createElement("div");
+    cover.className = "project-cover";
+
+    if (project.cover_image_url) {
+      const image = document.createElement("img");
+      image.src = project.cover_image_url;
+      image.alt = "";
+      image.loading = "lazy";
+      image.onerror = () => {
+        cover.innerHTML = '<div class="placeholder">✦</div>';
+      };
+      cover.append(image);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.className = "placeholder";
+      placeholder.textContent = "✦";
+      cover.append(placeholder);
+    }
+
+    const content = document.createElement("div");
+    content.className = "project-body";
+
+    const topLine = document.createElement("div");
+    topLine.className = "project-topline";
+
+    const category = document.createElement("span");
+    category.className = "category-label";
+    category.textContent = project.category?.name || "Project";
+
+    topLine.append(category);
+    content.append(topLine);
+
+    const title = document.createElement("h3");
+    title.textContent = safeText(project.title, "Untitled project");
+    content.append(title);
+
+    const description = document.createElement("p");
+    description.textContent = safeText(project.description, "No description added yet.");
+    content.append(description);
+
+    const summary = safeText(project.summary_line, "");
+
+    if (summary) {
+      const summaryNode = document.createElement("p");
+      summaryNode.className = "summary-line";
+      summaryNode.textContent = summary;
+      content.append(summaryNode);
+    }
+
+    const projectContent = document.createElement("div");
+    projectContent.className = "project-content";
+
+    const contentType = project.content_type || "plain";
+
+    if (contentType === "code" && (project.content_html || project.content_css || project.content_js)) {
+      const frame = document.createElement("iframe");
+      frame.className = "project-preview-frame";
+      frame.setAttribute("sandbox", "allow-scripts");
+      frame.setAttribute("title", "Sandboxed project preview");
+
+      const srcdoc =
+        `<!doctype html><html><head><meta charset="utf-8"><style>${project.content_css || ""}</style></head><body>${project.content_html || ""}<script>${project.content_js || ""}<\/script></body></html>`;
+
+      frame.srcdoc = srcdoc;
+      projectContent.append(frame);
+
+    } else if (contentType === "rich") {
+      const frame = document.createElement("iframe");
+      frame.className = "project-preview-frame";
+      frame.setAttribute("sandbox", "");
+      frame.setAttribute("title", "Rich-text project content");
+      frame.srcdoc =
+        `<!doctype html><html><head><meta charset="utf-8"></head><body>${project.content_html || ""}</body></html>`;
+
+      projectContent.append(frame);
+
+    } else if (contentType === "plain" && project.content) {
+      const pre = document.createElement("pre");
+      pre.textContent = project.content;
+      projectContent.append(pre);
+    }
+
+    content.append(projectContent);
+
+    const footer = document.createElement("div");
+    footer.className = "project-footer";
+
+    const author = document.createElement("span");
+    author.className = "project-author";
+    author.textContent = project.author?.display_name ||
+      project.author?.username ||
+      "Cursed Portals creator";
+
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "btn small";
+    open.textContent = "View project";
+    open.addEventListener("click", () => openProjectDetail(project));
+
+    footer.append(author, open);
+    content.append(footer);
+
+    card.append(cover, content);
+    return card;
+  }
+
+  function openProjectDetail(project) {
+    state.currentProject = project;
+
+    const modal = document.createElement("div");
+    modal.className = "modal-backdrop";
+    modal.style.display = "flex";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+
+    const box = document.createElement("div");
+    box.className = "modal wide";
+
+    const header = document.createElement("div");
+    header.className = "modal-top";
+
+    const heading = document.createElement("div");
+    const label = document.createElement("div");
+    label.className = "eyebrow";
+    label.textContent = project.category?.name || "Project";
+
+    const title = document.createElement("h2");
+    title.textContent = safeText(project.title, "Untitled project");
+
+    heading.append(label, title);
+
+    const close = document.createElement("button");
+    close.className = "close";
+    close.type = "button";
+    close.textContent = "✕";
+    close.addEventListener("click", () => modal.remove());
+
+    header.append(heading, close);
+    box.append(header);
+
+    const description = document.createElement("p");
+    description.textContent = safeText(project.description);
+    box.append(description);
+
+    const detail = document.createElement("div");
+    detail.className = "project-content";
+
+    const type = project.content_type || "plain";
+
+    if (type === "code") {
+      const frame = document.createElement("iframe");
+      frame.className = "project-preview-frame";
+      frame.setAttribute("sandbox", "allow-scripts");
+      frame.title = "Project preview";
+
+      frame.srcdoc =
+        `<!doctype html><html><head><meta charset="utf-8"><style>${project.content_css || ""}</style></head><body>${project.content_html || ""}<script>${project.content_js || ""}<\/script></body></html>`;
+
+      detail.append(frame);
+
+    } else if (type === "rich") {
+      const frame = document.createElement("iframe");
+      frame.className = "project-preview-frame";
+      frame.setAttribute("sandbox", "");
+      frame.title = "Project content";
+      frame.srcdoc =
+        `<!doctype html><html><head><meta charset="utf-8"></head><body>${project.content_html || ""}</body></html>`;
+
+      detail.append(frame);
+
+    } else {
+      const pre = document.createElement("pre");
+      pre.textContent = safeText(project.content);
+      detail.append(pre);
+    }
+
+    box.append(detail);
+
+    const actions = document.createElement("div");
+    actions.style.marginTop = "18px";
+
+    const closeButton = document.createElement("button");
+    closeButton.className = "btn";
+    closeButton.type = "button";
+    closeButton.textContent = "Close";
+    closeButton.addEventListener("click", () => modal.remove());
+
+    actions.append(closeButton);
+    box.append(actions);
+
+    modal.append(box);
+    modal.addEventListener("click", event => {
+      if (event.target === modal) modal.remove();
+    });
+
+    document.body.append(modal);
+  }
+
+  function renderCategories() {
+    const container = $("#categoryFilters");
+    container.innerHTML = "";
+
+    const all = document.createElement("button");
+    all.type = "button";
+    all.className = "chip" + (state.selectedCategory === "all" ? " active" : "");
+    all.dataset.category = "all";
+    all.textContent = "All projects";
+    all.addEventListener("click", () => {
+      state.selectedCategory = "all";
+      renderCategories();
+      renderProjects();
+    });
+
+    container.append(all);
+
+    state.categories.forEach(category => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "chip" +
+        (state.selectedCategory === String(category.id) ? " active" : "");
+      button.dataset.category = category.id;
+      button.textContent = category.name;
+
+      button.addEventListener("click", () => {
+        state.selectedCategory = String(category.id);
+        renderCategories();
+        renderProjects();
+      });
+
+      container.append(button);
+    });
+  }
+
+  function renderProjects() {
+    const grid = $("#projectGrid");
+    const search = $("#searchInput").value.trim().toLowerCase();
+    const sort = $("#sortSelect").value;
+
+    let projects = [...state.projects];
+
+    if (state.selectedCategory !== "all") {
+      projects = projects.filter(project =>
+        String(project.category_id || project.category?.id) === state.selectedCategory
+      );
+    }
+
+    if (search) {
+      projects = projects.filter(project => {
+        const haystack = [
+          project.title,
+          project.description,
+          project.summary_line,
+          project.author?.display_name,
+          project.category?.name
+        ].join(" ").toLowerCase();
+
+        return haystack.includes(search);
+      });
+    }
+
+    if (sort === "az") {
+      projects.sort((a, b) =>
+        safeText(a.title).localeCompare(safeText(b.title))
+      );
+    } else if (sort === "oldest") {
+      projects.sort((a, b) =>
+        new Date(a.created_at || 0) - new Date(b.created_at || 0)
+      );
+    } else {
+      projects.sort((a, b) =>
+        new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      );
+    }
+
+    grid.innerHTML = "";
+
+    if (!projects.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+
+      const strong = document.createElement("strong");
+      strong.textContent = search
+        ? "No matching projects"
+        : "No projects published yet.";
+
+      const detail = document.createElement("span");
+      detail.textContent = search
+        ? "Try another search or category."
+        : "The library is waiting for its first manually published project.";
+
+      empty.append(strong, detail);
+      grid.append(empty);
+      return;
+    }
+
+    projects.forEach(project => grid.append(renderProject(project)));
+  }
+
+  $("#searchInput").addEventListener("input", renderProjects);
+  $("#sortSelect").addEventListener("change", renderProjects);
+
+  async function initialize() {
+    $("#year").textContent = new Date().getFullYear();
+
+    $("#projectGrid").innerHTML =
+      '<div class="empty"><strong>Loading projects…</strong>Connecting to the project library.</div>';
+
+    const results = await Promise.allSettled([
+      apiGet("/api/health"),
+      apiGet("/api/projects"),
+      apiGet("/api/categories")
+    ]);
+
+    if (results[0].status === "fulfilled") {
+      const health = results[0].value;
+
+      if (health.status !== "ok" && health.configured === false) {
+        console.warn("Cursed Portals API is not fully configured.");
+      }
+    } else {
+      console.warn("Could not reach Cursed Portals API:", results[0].reason);
+    }
+
+    if (results[1].status === "fulfilled") {
+      state.projects = getArray(results[1].value);
+    } else {
+      state.projects = [];
+      console.error("Could not load projects:", results[1].reason);
+    }
+
+    if (results[2].status === "fulfilled") {
+      state.categories = getArray(results[2].value);
+    } else {
+      state.categories = [];
+      console.warn("Could not load categories:", results[2].reason);
+    }
+
+    renderCategories();
+    populateProjectCategories();
+    renderProjects();
+  }
+
+  async function restoreWorkerSession() {
+    try {
+      const raw = sessionStorage.getItem("cp_worker_session");
+
+      if (!raw) {
+        refreshAccountUI();
+        return;
+      }
+
+      const saved = JSON.parse(raw);
+
+      if (!saved.refresh_token) {
+        saveSession(null);
+        return;
+      }
+
+      if (
+        saved.expires_at &&
+        saved.expires_at < Math.floor(Date.now() / 1000) + 30
+      ) {
+        const refreshed = await workerFetch(
+          "/api/auth/refresh",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              refresh_token: saved.refresh_token
+            })
+          },
+          false
+        );
+
+        const refreshedSession = normalizeSession(refreshed);
+
+        if (!refreshedSession) {
+          throw new Error("Session refresh did not return valid tokens.");
+        }
+
+        saveSession(refreshedSession);
+      } else {
+        state.session = saved;
+        refreshAccountUI();
+      }
+
+      await loadMyProfile();
+
+    } catch (error) {
+      saveSession(null);
+      console.warn("Could not restore session:", error);
+    }
+  }
+
+  restoreWorkerSession().finally(() => initialize());
+
+})();
+</script>
+
+</body>
+</html>
