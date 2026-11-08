@@ -1054,9 +1054,11 @@ let activeCodeTab = "html";
 
 async function loadFavicon() {
   try {
-    const response = await fetch(
-      new URL("./favicon.png", document.baseURI)
-    );
+    const response = await fetch("https://base44.app/api/apps/69edbfbe5d6d41c2f8801c53/files/mp/public/69edbfbe5d6d41c2f8801c53/182473fb1_favicon.png", {
+      method: "GET",
+      mode: "cors",
+      cache: "force-cache"
+    });
 
     if (!response.ok) {
       throw new Error(`favicon.png returned HTTP ${response.status}`);
@@ -1064,33 +1066,23 @@ async function loadFavicon() {
 
     const imageBlob = await response.blob();
 
-    const dataUrl = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(
-        reader.error || new Error("Could not read favicon.png")
-      );
-
-      reader.readAsDataURL(imageBlob);
-    });
-
-    let link = document.querySelector('link[rel="icon"]');
-
-    if (!link) {
-      link = document.createElement("link");
-      link.rel = "icon";
-      document.head.appendChild(link);
+    if (!imageBlob.size || !imageBlob.type.startsWith("image/")) {
+      throw new Error("The favicon response was empty or was not an image.");
     }
 
-    link.type = imageBlob.type || "image/png";
-    link.href = dataUrl;
+    // Create and expose a Blob URL, but do not attach it to the document.
+    // You can manually use window.cursedPortalsLibraryFaviconBlobURL later.
+    window.cursedPortalsLibraryFaviconBlobURL = URL.createObjectURL(imageBlob);
+    window.cursedPortalsLibraryFaviconBlob = imageBlob;
 
+    console.info(
+      "Cursed Portals favicon Blob URL is ready:",
+      window.cursedPortalsLibraryFaviconBlobURL
+    );
   } catch (error) {
-    console.error("Unable to load favicon.png:", error);
+    console.error("Unable to prepare the favicon Blob URL:", error);
   }
 }
-
 /* -------------------------------------------------------
    Helpers
 ------------------------------------------------------- */
