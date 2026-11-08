@@ -1,0 +1,1315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b12">
+<meta name="description" content="Cursed Portals — A recreation of Odd Portals. Build a frame, light the portal, and explore the portal mechanics.">
+<title>Cursed Portals — Mod Guide</title>
+
+<style>
+:root {
+  --bg: #100b12;
+  --bg-soft: #19101d;
+  --panel: #211526;
+  --panel-light: #2b1a30;
+  --border: #503052;
+  --purple: #bd7bdb;
+  --purple-light: #e0a9f4;
+  --orange: #ff873e;
+  --red: #f05a55;
+  --gold: #f4c879;
+  --text: #f6edf8;
+  --muted: #c0adca;
+  --green: #a6dfb2;
+  --radius: 18px;
+  --max: 1120px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% -20%, #54244f 0, transparent 48%),
+    radial-gradient(ellipse at 100% 70%, #32172d 0, transparent 35%),
+    var(--bg);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  line-height: 1.65;
+}
+
+button, input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.wrap {
+  width: min(var(--max), calc(100% - 40px));
+  margin: auto;
+}
+
+.eyebrow {
+  color: var(--purple-light);
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.section {
+  padding: 65px 0;
+}
+
+.section-heading {
+  margin-bottom: 28px;
+}
+
+.section-heading h2 {
+  font-size: clamp(27px, 4vw, 39px);
+  line-height: 1.15;
+  letter-spacing: -.04em;
+  margin: 8px 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  max-width: 720px;
+  margin: 0;
+}
+
+.gradient-text {
+  background: linear-gradient(100deg, #f7d7ff, #bd7bdb, #ff9b62);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Warning gate */
+
+.warning-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 25px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #692b43 0, transparent 55%),
+    linear-gradient(145deg, #10080e, #1b0d19 60%, #100b12);
+}
+
+.warning-card {
+  width: min(760px, 100%);
+  padding: clamp(24px, 5vw, 48px);
+  border: 1px solid #a94f57;
+  border-radius: 22px;
+  background: linear-gradient(150deg, #29151e, #190f1c);
+  box-shadow: 0 25px 100px #000b, 0 0 55px #d43e4b20;
+}
+
+.warning-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  font-size: 34px;
+  color: #ffb3a0;
+  background: #e64b4b20;
+  border: 1px solid #e65a5a70;
+  margin-bottom: 22px;
+}
+
+.warning-card h1 {
+  font-size: clamp(30px, 6vw, 47px);
+  line-height: 1.05;
+  margin: 10px 0 18px;
+  letter-spacing: -.045em;
+}
+
+.warning-card h1 span {
+  color: #ff8178;
+}
+
+.warning-main {
+  padding: 19px;
+  border-left: 4px solid var(--red);
+  border-radius: 0 12px 12px 0;
+  background: #f04d4d13;
+  margin: 22px 0;
+  font-size: 16px;
+}
+
+.warning-main strong {
+  color: #ff9d91;
+}
+
+.warning-fix {
+  padding: 19px;
+  border: 1px solid #a77bba55;
+  border-radius: 14px;
+  background: #bd7bdb0d;
+  margin: 20px 0;
+}
+
+.warning-fix h3 {
+  margin: 0 0 10px;
+  color: var(--purple-light);
+}
+
+.warning-fix ol {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+
+.warning-fix li {
+  padding: 3px 0;
+}
+
+.warning-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 25px 0 17px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #ffffff06;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.warning-ack input {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  accent-color: var(--purple);
+  margin-top: 2px;
+}
+
+.continue-button {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 15px 20px;
+  color: #1b0c1d;
+  background: linear-gradient(110deg, #e7a2f4, #bd7bdb);
+  font-weight: 900;
+  font-size: 15px;
+  transition: .2s;
+}
+
+.continue-button:disabled {
+  cursor: not-allowed;
+  opacity: .35;
+  filter: grayscale(.5);
+}
+
+.continue-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px #bd7bdb44;
+}
+
+.warning-footnote {
+  text-align: center;
+  font-size: 11px;
+  color: #927e99;
+  margin: 14px 0 0;
+}
+
+/* Main content */
+
+#mainContent {
+  display: none;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #ffffff12;
+  background: #100b12df;
+  backdrop-filter: blur(16px);
+}
+
+.topbar-inner {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  font-weight: 950;
+  letter-spacing: .12em;
+  font-size: 14px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: #1a0c1c;
+  background: linear-gradient(145deg, #f3b2f6, #9b52bd);
+  box-shadow: 0 0 25px #bd7bdb44;
+  font-size: 20px;
+}
+
+.nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.nav a {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.nav a:hover {
+  color: white;
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--text);
+  background: #ffffff08;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+  transition: .2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  border-color: var(--purple);
+  background: #bd7bdb16;
+}
+
+.button.primary {
+  color: #1c0d20;
+  border-color: transparent;
+  background: linear-gradient(110deg, #e3a2ef, #bd7bdb);
+}
+
+.button.download {
+  color: #1b0e11;
+  background: linear-gradient(110deg, #ffc47d, #ff874e);
+  border-color: transparent;
+}
+
+.hero {
+  padding: 85px 0 75px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 35px;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: clamp(43px, 7vw, 78px);
+  line-height: 1;
+  letter-spacing: -.06em;
+  margin: 17px 0 23px;
+}
+
+.hero-copy {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 17px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.hero-note {
+  color: #907e9b;
+  font-size: 11px;
+  margin-top: 17px;
+}
+
+.portal-art {
+  min-height: 340px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.portal-ring {
+  width: 245px;
+  height: 315px;
+  border: 9px solid #49234e;
+  border-radius: 48% 48% 40% 40%;
+  background:
+    radial-gradient(ellipse at center, #ffba70 0, #e45d8d 18%,
+    #793c9e 43%, #21152f 72%);
+  box-shadow:
+    0 0 35px #d96cdd88,
+    0 0 80px #a84bcb44,
+    inset 0 0 32px #ffcbcc88,
+    0 0 0 13px #bd7bdb14;
+  position: relative;
+  transform: perspective(700px) rotateY(-12deg);
+}
+
+.portal-ring::before {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border: 2px solid #ffd0e8aa;
+  border-radius: inherit;
+  box-shadow: 0 0 20px #ffc4ec;
+}
+
+.portal-ring::after {
+  content: "";
+  position: absolute;
+  inset: 30px;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    155deg, transparent 0 13px, #fff2 14px 16px
+  );
+}
+
+.float-label {
+  position: absolute;
+  padding: 12px 15px;
+  border: 1px solid #75457d;
+  border-radius: 12px;
+  background: #211427ed;
+  box-shadow: 0 15px 35px #0007;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.float-label strong {
+  display: block;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.float-label.one {
+  top: 35px;
+  left: 0;
+}
+
+.float-label.two {
+  right: 0;
+  bottom: 28px;
+}
+
+/* Content cards */
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.info-card {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(150deg, #281a30, #19101e);
+}
+
+.info-icon {
+  font-size: 27px;
+  margin-bottom: 12px;
+}
+
+.info-card h3 {
+  margin: 0 0 7px;
+  font-size: 17px;
+}
+
+.info-card p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.recipe-list {
+  display: grid;
+  gap: 16px;
+}
+
+.recipe {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(110deg, #25172c, #18101d);
+}
+
+.recipe-number {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  color: var(--purple-light);
+  background: #bd7bdb19;
+  border: 1px solid #bd7bdb55;
+  font-size: 23px;
+  font-weight: 950;
+}
+
+.recipe h3 {
+  margin: 0 0 7px;
+  font-size: 18px;
+}
+
+.recipe p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.recipe .recipe-result {
+  margin-top: 12px;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: #a6dfb214;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.recipe-warning {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border: 1px solid #e4a25c55;
+  border-radius: 12px;
+  background: #e4a25c0d;
+  color: #e9c79f;
+  font-size: 13px;
+}
+
+.recipe-warning strong {
+  color: var(--gold);
+}
+
+.ingredient-chain {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.ingredient {
+  padding: 9px 12px;
+  border: 1px solid #76517f;
+  border-radius: 9px;
+  background: #bd7bdb12;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.arrow {
+  color: var(--orange);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 7px;
+  color: #ffc48c;
+  background: #ff9b4515;
+  border: 1px solid #ff9b4538;
+  font: 11px ui-monospace, monospace;
+}
+
+.download-panel {
+  padding: 30px;
+  border: 1px solid #80518d;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse at 100% 0%, #6b367b35, transparent 55%),
+    linear-gradient(140deg, #2c1934, #19101e);
+}
+
+.download-panel h3 {
+  font-size: 23px;
+  margin: 0 0 8px;
+}
+
+.download-panel p {
+  color: var(--muted);
+  max-width: 700px;
+  font-size: 13px;
+}
+
+.download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.license-box {
+  padding: 23px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #ffffff05;
+}
+
+.license-box h3 {
+  margin: 0 0 8px;
+}
+
+.license-box p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.license-box a {
+  color: var(--purple-light);
+}
+
+.footer {
+  padding: 28px 0 40px;
+  border-top: 1px solid #ffffff12;
+  color: #8d7a96;
+  font-size: 12px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Responsive */
+
+@media(max-width: 850px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-art {
+    min-height: 290px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav {
+    gap: 12px;
+  }
+}
+
+@media(max-width: 620px) {
+  .wrap {
+    width: min(100% - 30px, var(--max));
+  }
+
+  .topbar-inner {
+    min-height: 64px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .hero {
+    padding: 55px 0 40px;
+  }
+
+  .hero h1 {
+    font-size: 49px;
+  }
+
+  .hero-copy {
+    font-size: 15px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recipe {
+    grid-template-columns: 1fr;
+  }
+
+  .recipe-number {
+    width: 48px;
+    height: 48px;
+  }
+
+  .section {
+    padding: 45px 0;
+  }
+
+  .float-label.one {
+    left: 0;
+  }
+
+  .float-label.two {
+    right: 0;
+  }
+
+  .download-panel {
+    padding: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     REQUIRED WARNING GATE
+     The rest of the page is hidden until acknowledged.
+====================================================== -->
+
+<section class="warning-screen" id="warningScreen">
+  <div class="warning-card">
+
+    <div class="warning-icon">⚠</div>
+
+    <div class="eyebrow">Important · Read before playing</div>
+
+    <h1>
+      A warning before you
+      <span>open the portal.</span>
+    </h1>
+
+    <div class="warning-main">
+      <strong>WARNING: If you do not build a frame and light the portal,
+      your world will hard-lock and the game will crash.</strong>
+
+      <p>
+        Do not leave a portal unframed or unlit. Make sure you understand
+        the portal-building process before using this mod in a world.
+      </p>
+    </div>
+
+    <div class="warning-fix">
+      <h3>How to recover a locked world</h3>
+
+      <p class="muted">
+        If your world becomes locked or crashes because of the portal,
+        use this troubleshooting sequence:
+      </p>
+
+      <ol>
+        <li>Turn off or disable the Cursed Portals mod.</li>
+        <li>Open the affected world without the mod enabled.</li>
+        <li>Once the world has opened, turn off the game completely.</li>
+        <li>Reopen the game with Cursed Portals enabled.</li>
+      </ol>
+
+      <p class="muted" style="margin-bottom:0">
+        This is the troubleshooting method supplied for the mod.
+        Back up important worlds before experimenting.
+      </p>
+    </div>
+
+    <label class="warning-ack">
+      <input type="checkbox" id="warningCheckbox">
+      <span>
+        I have read and understood the warning. I understand that failing
+        to build and light the portal may hard-lock my world and crash
+        the game.
+      </span>
+    </label>
+
+    <button class="continue-button" id="continueButton" disabled>
+      I understand — Continue to Cursed Portals
+    </button>
+
+    <p class="warning-footnote">
+      Please read the portal instructions before using the mod.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- =====================================================
+     MAIN MOD PAGE
+====================================================== -->
+
+<div id="mainContent">
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+
+    <a class="brand" href="#home">
+      <span class="brand-icon">✦</span>
+      <span>CURSED PORTALS</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#overview">Overview</a>
+      <a href="#tools">Tools</a>
+      <a href="#portal">Portals</a>
+      <a href="#essence">Essence</a>
+      <a href="#downloads">Downloads</a>
+    </nav>
+
+    <a class="button primary" href="#downloads">
+      Get the mod ↓
+    </a>
+
+  </div>
+</header>
+
+
+<main id="home">
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="wrap hero-grid">
+
+    <div>
+      <div class="eyebrow">Minecraft mod · Portal mechanics</div>
+
+      <h1>
+        Open the way to
+        <span class="gradient-text">another world.</span>
+      </h1>
+
+      <p class="hero-copy">
+        Cursed Portals brings a new way to create and interact with
+        portals. Craft the required items, assemble your obsidian,
+        spawn your portal and light it.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button download" href="https://is.gd/kt60nj"
+           target="_blank" rel="noopener noreferrer">
+          Download the mod ↗
+        </a>
+
+        <a class="button" href="#portal">
+          Learn how to make portals
+        </a>
+      </div>
+
+      <p class="hero-note">
+        A recreation of the Odd Portals mod.
+      </p>
+    </div>
+
+    <div class="portal-art" aria-hidden="true">
+      <div class="portal-ring"></div>
+
+      <div class="float-label one">
+        <strong>Build the frame</strong>
+        <span>Gather your obsidian</span>
+      </div>
+
+      <div class="float-label two">
+        <strong>Light the portal</strong>
+        <span>Open the way forward</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- OVERVIEW -->
+
+<section class="section" id="overview">
+  <div class="wrap">
+
+    <div class="section-heading">
+      <div class="eyebrow">About the mod</div>
+      <h2>Welcome to <span class="gradient-text">Cursed Portals.</span></h2>
+      <p>
+        Cursed Portals is a recreation of the Odd Portals mod.
+        Its central mechanic revolves around crafting a spawnable portal,
+        constructing the frame and lighting it.
+      </p>
+    </div>
+
+    <div class="info-grid">
+
+      <article class="info-card">
+        <div class="info-icon">🌀</div>
+        <h3>Spawnable portals</h3>
+        <p>
+          Craft a portal item from bundled obsidian and a valid firestarter.
+          Use the resulting item as part of your portal setup.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">🔥</div>
+        <h3>Light the way</h3>
+        <p>
+          Portal-related Flint and Steel recipes let you prepare the
+          tools needed for the portal mechanics.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">💎</div>
+        <h3>Portal Essence</h3>
+        <p>
+          Destroy a portal to obtain Portal Essence, which can be
+          processed into decorative and functional building pieces.
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- TOOLS -->
+
+<section class="section" id="tools">
+  <div class="wrap">
+
+    <div class="section-heading">
+      <div class="eyebrow">Step one · Prepare your tools</div>
+      <h2>Crafting the portal tools</h2>
+      <p>
+        The crafting table is used to prepare the Flint and Steel
+        variants and portal-related compasses.
+      </p>
+    </div>
+
+    <div class="recipe-list">
+
+      <article class="recipe">
+        <div class="recipe-number">01</div>
+        <div>
+          <h3>Portal Flint and Steel</h3>
+          <p>
+            Use the Spawnable Nether Portal item together with
+            the Flint and Steel in the crafting table, following
+            the recipe's required ingredient order.
+          </p>
+          <div class="recipe-result">Crafting table recipe</div>
+        </div>
+      </article>
+
+      <article class="recipe">
+        <div class="recipe-number">02</div>
+        <div>
+          <h3>Portal Compass</h3>
+          <p>
+            The portal-related compass can be crafted using the
+            Spawnable Nether Portal item and a Compass.
+            The Recovery Compass is also supported.
+          </p>
+          <div class="recipe-result">Regular Compass or Recovery Compass</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="recipe-warning">
+      <strong>Recipe order matters.</strong>
+      These recipes have a specific ingredient order. Follow the
+      mod's crafting recipe rather than assuming that the ingredients
+      can be placed in any arrangement.
+    </div>
+
+  </div>
+</section>
+
+
+<!-- PORTAL CRAFTING -->
+
+<section class="section" id="portal">
+  <div class="wrap">
+
+    <div class="section-heading">
+      <div class="eyebrow">Step two · Build your portal</div>
+      <h2>Crafting the <span class="gradient-text">Spawnable Portal.</span></h2>
+      <p>
+        The portal item is created through a sequence of obsidian
+        bundling recipes. Follow the stages in order.
+      </p>
+    </div>
+
+    <div class="recipe-list">
+
+      <article class="recipe">
+        <div class="recipe-number">01</div>
+
+        <div>
+          <h3>Bundle nine obsidian</h3>
+          <p>
+            Start by combining nine obsidian to create the first
+            obsidian bundle.
+          </p>
+
+          <div class="ingredient-chain">
+            <span class="ingredient">9 × Obsidian</span>
+            <span class="arrow">→</span>
+            <span class="ingredient">Bundle of 9</span>
+          </div>
+
+          <span class="recipe-result">First bundle created</span>
+        </div>
+      </article>
+
+
+      <article class="recipe">
+        <div class="recipe-number">02</div>
+
+        <div>
+          <h3>Upgrade the obsidian bundle</h3>
+          <p>
+            Combine the bundle of nine obsidian with five additional
+            obsidian to create the larger bundle.
+          </p>
+
+          <div class="ingredient-chain">
+            <span class="ingredient">Bundle of 9</span>
+            <span class="arrow">+</span>
+            <span class="ingredient">5 × Obsidian</span>
+            <span class="arrow">→</span>
+            <span class="ingredient">Bundle of 14</span>
+          </div>
+
+          <span class="recipe-result">Larger bundle created</span>
+        </div>
+      </article>
+
+
+      <article class="recipe">
+        <div class="recipe-number">03</div>
+
+        <div>
+          <h3>Craft the Spawnable Nether Portal</h3>
+          <p>
+            Combine the bundle of fourteen obsidian with either
+            a Flint and Steel or a Fire Charge.
+          </p>
+
+          <div class="ingredient-chain">
+            <span class="ingredient">Bundle of 14</span>
+            <span class="arrow">+</span>
+            <span class="ingredient">Flint and Steel</span>
+            <span class="arrow">or</span>
+            <span class="ingredient">Fire Charge</span>
+            <span class="arrow">→</span>
+            <span class="ingredient">Spawnable Portal</span>
+          </div>
+
+          <p style="margin-top:13px">
+            The Fire Charge must match the mod's accepted firestarter tag:
+          </p>
+
+          <p style="margin-top:9px">
+            <span class="tag">neoforge:firestarters</span>
+          </p>
+
+          <span class="recipe-result">Spawnable Nether Portal obtained</span>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="recipe-warning">
+      <strong>Do not forget the warning.</strong>
+      Once you are working with portals, make sure you build the
+      required frame and light the portal. An unbuilt or unlit portal
+      can hard-lock your world and crash the game.
+    </div>
+
+  </div>
+</section>
+
+
+<!-- PORTAL ESSENCE -->
+
+<section class="section" id="essence">
+  <div class="wrap">
+
+    <div class="section-heading">
+      <div class="eyebrow">Step three · Portal materials</div>
+      <h2>Portal Essence</h2>
+      <p>
+        Destroying a portal gives you Portal Essence. This material
+        can be processed in a stonecutter to create several portal-themed
+        building pieces.
+      </p>
+    </div>
+
+    <div class="info-grid">
+
+      <article class="info-card">
+        <div class="info-icon">🟪</div>
+        <h3>Portal Buttons</h3>
+        <p>
+          Turn Portal Essence into portal-themed buttons for
+          your builds and mechanisms.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">▥</div>
+        <h3>Portal Stairs</h3>
+        <p>
+          Create stairs using the stonecutter and Portal Essence.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">▰</div>
+        <h3>Portal Slabs</h3>
+        <p>
+          Produce slabs for decorative builds and architectural details.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">⬚</div>
+        <h3>Pressure Plates</h3>
+        <p>
+          Process Portal Essence into pressure plates for your builds.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">⚒</div>
+        <h3>Stonecutter</h3>
+        <p>
+          The stonecutter is the workstation used to turn Portal Essence
+          into these different forms.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <div class="info-icon">✨</div>
+        <h3>Reuse the material</h3>
+        <p>
+          Your portal can provide a material that continues to be useful
+          even after the portal itself has been destroyed.
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- DOWNLOADS -->
+
+<section class="section" id="downloads">
+  <div class="wrap">
+
+    <div class="section-heading">
+      <div class="eyebrow">Get started</div>
+      <h2>Download Cursed Portals</h2>
+      <p>
+        Get the mod or download the MCreator workspace if you want
+        to inspect the project.
+      </p>
+    </div>
+
+    <div class="download-panel">
+      <div class="eyebrow">Cursed Portals · Mod download</div>
+      <h3>Ready to open the portal?</h3>
+      <p>
+        Download the mod and follow the instructions on this page
+        before using portals in your world.
+      </p>
+
+      <div class="download-actions">
+        <a class="button download"
+           href="https://is.gd/kt60nj"
+           target="_blank"
+           rel="noopener noreferrer">
+          Download the mod ↗
+        </a>
+
+        <a class="button"
+           href="https://is.gd/Mqwifd"
+           target="_blank"
+           rel="noopener noreferrer">
+          Download MCreator workspace ↗
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- LICENSE -->
+
+<section class="section" id="license">
+  <div class="wrap">
+
+    <div class="license-box">
+      <div class="eyebrow">Open source licence</div>
+      <h3>MIT License</h3>
+
+      <p>
+        Cursed Portals is licensed under the MIT License.
+        You can read the full licence terms, including the permissions,
+        conditions and limitations, using the official licence reference.
+      </p>
+
+      <a href="https://choosealicense.com/licenses/mit/"
+         target="_blank"
+         rel="noopener noreferrer">
+        Read the MIT License ↗
+      </a>
+
+      <p style="margin-bottom:0">
+        Please refer to the licence included with the project for the
+        applicable copyright notice and licence text.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+</main>
+
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>© <span id="year"></span> Cursed Portals</span>
+    <span>A recreation of Odd Portals.</span>
+    <a href="#home">Back to top ↑</a>
+  </div>
+</footer>
+
+</div>
+
+
+<script>
+"use strict";
+
+/* -------------------------------------------------------
+   Warning gate
+------------------------------------------------------- */
+
+const warningScreen = document.getElementById("warningScreen");
+const mainContent = document.getElementById("mainContent");
+const warningCheckbox = document.getElementById("warningCheckbox");
+const continueButton = document.getElementById("continueButton");
+
+warningCheckbox.addEventListener("change", function () {
+  continueButton.disabled = !warningCheckbox.checked;
+});
+
+continueButton.addEventListener("click", function () {
+  if (!warningCheckbox.checked) {
+    return;
+  }
+
+  warningScreen.style.display = "none";
+  mainContent.style.display = "block";
+
+  document.body.style.overflow = "auto";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+});
+
+/* Keep the warning visible until the player acknowledges it. */
+document.body.style.overflow = "hidden";
+
+/* -------------------------------------------------------
+   Page initialization
+------------------------------------------------------- */
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+/* -------------------------------------------------------
+   Smooth navigation
+------------------------------------------------------- */
+
+document.querySelectorAll('.nav a, a[href^="#"]').forEach(link => {
+  link.addEventListener("click", function (event) {
+    const targetId = this.getAttribute("href");
+
+    if (!targetId || targetId === "#") {
+      return;
+    }
+
+    const target = document.querySelector(targetId);
+
+    if (!target) {
+      return;
+    }
+
+    /*
+      If the warning has not been dismissed, navigation to
+      hidden page sections is blocked.
+    */
+    if (mainContent.style.display !== "block") {
+      event.preventDefault();
+      return;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
