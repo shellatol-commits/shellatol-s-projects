@@ -1,165 +1,804 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#100d18">
-<link rel="icon" type="image/png" href="favicon.png">
 <title>Cursed Portals — A home for creators and community</title>
 <meta name="description" content="Discover independent projects, creative work, tools, experiments and the people behind them.">
+<link rel="icon" type="image/png" href="favicon.png">
+
 <style>
-:root{
-  color-scheme:dark;--bg:#100d18;--bg2:#15111f;--panel:#1b1627;--panel2:#211a30;
-  --line:#332943;--text:#f6f0ff;--muted:#b7aabe;--soft:#8f819d;
-  --accent:#bd83f5;--accent2:#8c54d8;--mint:#9de3c3;--radius:18px;
-  --shadow:0 18px 60px #0005;--max:1240px
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 75% -10%,#3a2154 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-a{color:inherit;text-decoration:none}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.wrap{width:min(var(--max),calc(100% - 44px));margin:auto}
-.topbar{height:76px;display:flex;align-items:center;gap:28px;border-bottom:1px solid #ffffff12;background:#100d18df;backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
-.top-inner{display:flex;align-items:center;justify-content:space-between;gap:22px}
-.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.11em;font-size:15px;white-space:nowrap}
-.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#d6a9ff,#7843bd);display:grid;place-items:center;color:#160d21;box-shadow:0 0 28px #a75ee855;font-size:19px}
-.nav{display:flex;align-items:center;gap:25px;color:var(--muted);font-size:14px}
-.nav a:hover,.nav a.active{color:#fff}
-.actions{display:flex;align-items:center;gap:10px}
-.btn{border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:10px 15px;border-radius:11px;font-weight:700;font-size:13px;transition:.18s}
-.btn:hover{border-color:#a66cdb;background:#ffffff12;transform:translateY(-1px)}
-.btn.primary{background:linear-gradient(135deg,#bd83f5,#8750c7);border-color:transparent;color:#160d21}
-.btn.primary:hover{filter:brightness(1.08)}
-.menu-btn{display:none}
-.hero{padding:83px 0 64px;position:relative;overflow:hidden}
-.hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid #bd83f52b;border-radius:50%;right:7%;top:30px;box-shadow:0 0 0 35px #bd83f509,0 0 0 75px #bd83f506;pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:50px;position:relative;z-index:1}
-.eyebrow{color:var(--accent);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:900}
-h1{font-size:clamp(42px,6.4vw,76px);line-height:1.02;letter-spacing:-.055em;margin:17px 0 22px;max-width:760px}
-.gradient{background:linear-gradient(100deg,#fff 12%,#d8b5ff 55%,#a1e4c7);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-copy{max-width:620px;color:#c8bdcf;font-size:17px;line-height:1.75}
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.hero-note{font-size:12px;color:var(--soft);margin-top:18px}
-.hero-art{min-height:330px;display:grid;place-items:center;position:relative}
-.portal{width:min(300px,75vw);aspect-ratio: .72;border:9px solid #39214e;border-radius:48% 48% 43% 43%;transform:perspective(700px) rotateY(-15deg);background:radial-gradient(ellipse at 50% 45%,#d8aaff 0,#a45ce4 15%,#522b79 42%,#1a1027 72%);box-shadow:0 0 35px #b66afc77,inset 0 0 30px #e6c8ff77,0 0 0 12px #9d5ed31c;position:relative}
-.portal:before{content:"";position:absolute;inset:14px;border:2px solid #e7c9ff80;border-radius:48% 48% 43% 43%;filter:drop-shadow(0 0 8px #dca8ff)}
-.portal:after{content:"";position:absolute;inset:30px 24px;background:repeating-linear-gradient(155deg,#fff0 0 12px,#e8c5ff26 13px 15px);border-radius:50%;filter:blur(2px)}
-.float-card{position:absolute;background:#1b1528eF;border:1px solid #63457c;padding:12px 15px;border-radius:13px;box-shadow:var(--shadow);font-size:12px}
-.float-card strong{display:block;font-size:14px}
-.float-one{top:34px;left:0}.float-two{bottom:30px;right:-8px}
-.section{padding:44px 0}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:23px}
-.section-head h2{font-size:25px;letter-spacing:-.03em;margin:5px 0}
-.section-head p{color:var(--muted);margin:0;font-size:13px}
-.text-link{color:var(--accent);font-size:13px;font-weight:800}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
-.search{position:relative;flex:1;min-width:210px}
-.search input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px 14px 12px 40px;outline:none}
-.search input:focus{border-color:var(--accent)}
-.search span{position:absolute;left:14px;top:10px;color:var(--soft)}
-select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 35px 12px 13px;outline:none}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
-.chip{border:1px solid var(--line);background:#ffffff06;color:var(--muted);padding:7px 12px;border-radius:30px;font-size:12px}
-.chip.active,.chip:hover{border-color:#9d65d0;color:#ead8ff;background:#a75ce41b}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
-.card{border:1px solid var(--line);background:linear-gradient(160deg,#211a30,#171321);border-radius:var(--radius);overflow:hidden;transition:.2s;min-width:0}
-.card:hover{transform:translateY(-4px);border-color:#765293;box-shadow:var(--shadow)}
-.cover{height:174px;background:radial-gradient(circle at 65% 35%,#774a9b,#30203f 45%,#17111f);position:relative;overflow:hidden}
-.cover img{width:100%;height:100%;object-fit:cover;display:block}
-.cover-placeholder{height:100%;display:grid;place-items:center;font-size:42px;color:#d4a9fa;text-shadow:0 0 24px #bd83f5}
-.cover-label{position:absolute;left:13px;top:13px;background:#100d18c9;border:1px solid #ffffff20;border-radius:30px;padding:5px 9px;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
-.card-body{padding:17px}
-.card-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--soft);font-size:11px}
-.card h3{font-size:17px;line-height:1.3;margin:11px 0 8px}
-.card p{color:var(--muted);font-size:13px;line-height:1.6;margin:0;min-height:42px}
-.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:13px;border-top:1px solid #ffffff10}
-.creator{display:flex;align-items:center;gap:8px;color:#cbbdd6;font-size:11px}
-.avatar{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#49305e;color:#f1dfff;font-weight:800}
-.open-link{font-size:12px;color:var(--accent);font-weight:800}
-.empty{grid-column:1/-1;padding:36px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius);color:var(--muted);background:#ffffff04}
-.empty strong{display:block;color:var(--text);font-size:15px;margin-bottom:5px}
-.feature-band{border:1px solid #5a3c70;background:linear-gradient(110deg,#261735,#1b1728 70%);border-radius:22px;padding:28px;display:flex;align-items:center;justify-content:space-between;gap:25px;margin:26px 0}
-.feature-band h2{margin:0 0 7px;font-size:22px}
-.feature-band p{margin:0;color:var(--muted);font-size:13px;max-width:650px}
-.feature-icon{width:54px;height:54px;flex:0 0 auto;border-radius:16px;background:#a75ce426;display:grid;place-items:center;font-size:26px}
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.how{padding:20px;border:1px solid var(--line);background:var(--panel);border-radius:15px}
-.how .num{color:var(--accent);font-weight:900;font-size:12px;letter-spacing:.12em}
-.how h3{font-size:15px;margin:10px 0 6px}
-.how p{font-size:12px;color:var(--muted);margin:0;line-height:1.65}
-footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:var(--soft);font-size:12px}
-.footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.notice{font-size:11px;color:var(--soft);margin-top:13px}
-.toast{position:fixed;bottom:20px;right:20px;z-index:50;background:#292039;border:1px solid #765293;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--shadow);display:none;max-width:min(400px,calc(100% - 40px))}
-.modal-backdrop{position:fixed;inset:0;background:#050309c9;z-index:40;display:none;align-items:center;justify-content:center;padding:20px}
-.modal{width:min(700px,100%);max-height:85vh;overflow:auto;background:var(--bg2);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:24px}
-.modal-top{display:flex;justify-content:space-between;gap:20px;align-items:start}
-.modal h2{margin:5px 0 10px}.modal p{color:var(--muted);line-height:1.7}
-.close{border:1px solid var(--line);background:transparent;color:white;border-radius:9px;padding:7px 11px}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr .7fr;gap:20px}.grid{grid-template-columns:repeat(2,1fr)}.nav{gap:15px}}
-@media(max-width:680px){
- .wrap{width:min(100% - 30px,var(--max))}
- .topbar{height:66px}.nav{display:none}.menu-btn{display:inline-flex}
- .hero{padding:60px 0 35px}.hero-grid{grid-template-columns:1fr}.hero-art{min-height:230px}.portal{width:170px}
- .float-one{left:8%;top:12px}.float-two{right:8%;bottom:12px}
- .grid,.how-grid{grid-template-columns:1fr}
- .section{padding:32px 0}.section-head{align-items:start;flex-direction:column}
- .feature-band{align-items:flex-start;flex-direction:column}
+:root {
+  color-scheme: dark;
+  --bg: #100d18;
+  --bg2: #15111f;
+  --panel: #1b1627;
+  --panel2: #211a30;
+  --line: #332943;
+  --text: #f6f0ff;
+  --muted: #b7aabe;
+  --soft: #8f819d;
+  --accent: #bd83f5;
+  --accent2: #8c54d8;
+  --mint: #9de3c3;
+  --radius: 18px;
+  --shadow: 0 18px 60px #0005;
+  --max: 1240px;
 }
 
-/* Creator support system */
-.support-intro{max-width:760px;color:var(--muted);margin-top:-5px}
-.support-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
-.support-card{background:linear-gradient(145deg,#211a30,#181321);border:1px solid var(--line);border-radius:16px;padding:20px;min-height:170px}
-.support-icon{font-size:25px;margin-bottom:12px}
-.support-card h3{margin:0 0 7px;font-size:16px}
-.support-card p{margin:0;color:var(--muted);font-size:13px}
-.support-actions{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}
-.support-action{border:1px solid var(--line);background:#ffffff08;color:var(--text);padding:9px 12px;border-radius:10px;font-size:12px;font-weight:750}
-.support-action:hover{border-color:var(--accent);background:#bd83f51a}
-.support-action.done{border-color:#77cda8;color:#a8ebca;background:#77cda811}
-.support-panel{margin-top:24px;padding:18px;border:1px solid #8c54d855;border-radius:16px;background:linear-gradient(135deg,#251b35,#171321)}
-.support-panel h3{margin:0 0 5px}
-.support-panel p{margin:0;color:var(--muted);font-size:13px}
-.support-note{font-size:12px;color:var(--soft);margin-top:12px}
-.support-form{display:grid;gap:10px;margin-top:12px}
-.support-form input,.support-form textarea{width:100%;background:#100d18;border:1px solid var(--line);border-radius:10px;padding:11px;color:var(--text)}
-.support-form textarea{min-height:82px;resize:vertical}
-.support-form .btn{justify-self:start}
-.support-count{font-size:12px;color:var(--mint);margin-top:7px}
-@media(max-width:850px){.support-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.support-grid{grid-template-columns:1fr}}
+* { box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
 
-.auth-backdrop{position:fixed;inset:0;z-index:120;background:#08060dcc;display:none;align-items:center;justify-content:center;padding:20px}
-.auth-dialog{width:min(100%,480px);max-height:90vh;overflow:auto;background:#1b1627;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)}
-.auth-dialog h2{margin:0 0 5px}.auth-dialog p{color:var(--muted);font-size:13px}
-.auth-field{display:grid;gap:6px;margin:12px 0}.auth-field label{font-size:12px;color:var(--muted)}
-.auth-field input{width:100%;background:#100d18;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text)}
-.auth-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.auth-link{border:0;background:none;color:#d7b5ff;text-decoration:underline;cursor:pointer;padding:8px 0}
-.auth-status{font-size:12px;color:var(--mint);min-height:18px;margin-top:8px}
-.auth-config{border-top:1px solid var(--line);margin-top:20px;padding-top:14px}
-.auth-config summary{cursor:pointer;color:var(--muted);font-size:12px}
-.user-chip{font-size:12px;color:var(--mint);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 75% -10%, #3a2154 0, transparent 34%),
+    var(--bg);
+  color: var(--text);
+  font: 15px/1.55 Inter, system-ui, sans-serif;
+}
 
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.wrap {
+  width: min(var(--max), calc(100% - 44px));
+  margin: auto;
+}
+
+.topbar {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ffffff12;
+  background: #100d18df;
+  backdrop-filter: blur(18px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.top-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-weight: 900;
+  letter-spacing: .11em;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #d6a9ff, #7843bd);
+  display: grid;
+  place-items: center;
+  color: #160d21;
+  box-shadow: 0 0 28px #a75ee855;
+  font-size: 19px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav a:hover, .nav a.active { color: white; }
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  background: #ffffff08;
+  color: var(--text);
+  padding: 10px 15px;
+  border-radius: 11px;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .18s;
+}
+
+.btn:hover {
+  border-color: #a66cdb;
+  background: #ffffff12;
+  transform: translateY(-1px);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #bd83f5, #8750c7);
+  border-color: transparent;
+  color: #160d21;
+}
+
+.btn:disabled {
+  opacity: .5;
+  cursor: wait;
+  transform: none;
+}
+
+.hero {
+  padding: 83px 0 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero:after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border: 1px solid #bd83f52b;
+  border-radius: 50%;
+  right: 7%;
+  top: 30px;
+  box-shadow: 0 0 0 35px #bd83f509, 0 0 0 75px #bd83f506;
+  pointer-events: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  align-items: center;
+  gap: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+h1 {
+  font-size: clamp(42px, 6.4vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  margin: 17px 0 22px;
+  max-width: 760px;
+}
+
+.gradient {
+  background: linear-gradient(100deg, #fff 12%, #d8b5ff 55%, #a1e4c7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-copy {
+  max-width: 620px;
+  color: #c8bdcf;
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.hero-note {
+  font-size: 12px;
+  color: var(--soft);
+  margin-top: 18px;
+}
+
+.hero-art {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.portal {
+  width: min(300px, 75vw);
+  aspect-ratio: .72;
+  border: 9px solid #39214e;
+  border-radius: 48% 48% 43% 43%;
+  transform: perspective(700px) rotateY(-15deg);
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    #d8aaff 0,
+    #a45ce4 15%,
+    #522b79 42%,
+    #1a1027 72%
+  );
+  box-shadow:
+    0 0 35px #b66afc77,
+    inset 0 0 30px #e6c8ff77,
+    0 0 0 12px #9d5ed31c;
+  position: relative;
+}
+
+.portal:before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 2px solid #e7c9ff80;
+  border-radius: 48% 48% 43% 43%;
+  filter: drop-shadow(0 0 8px #dca8ff);
+}
+
+.portal:after {
+  content: "";
+  position: absolute;
+  inset: 30px 24px;
+  background: repeating-linear-gradient(
+    155deg,
+    #fff0 0 12px,
+    #e8c5ff26 13px 15px
+  );
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.float-card {
+  position: absolute;
+  background: #1b1528ef;
+  border: 1px solid #63457c;
+  padding: 12px 15px;
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+  font-size: 12px;
+}
+
+.float-card strong {
+  display: block;
+  font-size: 14px;
+}
+
+.float-one { top: 34px; left: 0; }
+.float-two { bottom: 30px; right: -8px; }
+
+.section { padding: 44px 0; }
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 23px;
+}
+
+.section-head h2 {
+  font-size: 25px;
+  letter-spacing: -.03em;
+  margin: 5px 0;
+}
+
+.section-head p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 13px;
+}
+
+.text-link {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search {
+  position: relative;
+  flex: 1;
+  min-width: 210px;
+}
+
+.search input {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  padding: 12px 14px 12px 40px;
+  outline: none;
+}
+
+.search span {
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  color: var(--soft);
+}
+
+select, input, textarea {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+select { padding-right: 35px; }
+
+input:focus, textarea:focus, select:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: #ffffff06;
+  color: var(--muted);
+  padding: 7px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+}
+
+.chip.active, .chip:hover {
+  border-color: #9d65d0;
+  color: #ead8ff;
+  background: #a75ce41b;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.card {
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, #211a30, #171321);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: .2s;
+  min-width: 0;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #765293;
+  box-shadow: var(--shadow);
+}
+
+.cover {
+  height: 174px;
+  background: radial-gradient(circle at 65% 35%, #774a9b, #30203f 45%, #17111f);
+  position: relative;
+  overflow: hidden;
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cover-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 42px;
+  color: #d4a9fa;
+  text-shadow: 0 0 24px #bd83f5;
+}
+
+.cover-label {
+  position: absolute;
+  left: 13px;
+  top: 13px;
+  background: #100d18c9;
+  border: 1px solid #ffffff20;
+  border-radius: 30px;
+  padding: 5px 9px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.card-body { padding: 17px; }
+
+.card-meta {
+  color: var(--soft);
+  font-size: 11px;
+}
+
+.card h3 {
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 11px 0 8px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 42px;
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top: 1px solid #ffffff10;
+}
+
+.creator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #cbbdd6;
+  font-size: 11px;
+}
+
+.avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #49305e;
+  color: #f1dfff;
+  font-weight: 800;
+}
+
+.open-link {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 800;
+  border: 0;
+  background: none;
+}
+
+.empty {
+  grid-column: 1/-1;
+  padding: 36px;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: #ffffff04;
+}
+
+.empty strong {
+  display: block;
+  color: var(--text);
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.feature-band {
+  border: 1px solid #5a3c70;
+  background: linear-gradient(110deg, #261735, #1b1728 70%);
+  border-radius: 22px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin: 26px 0;
+}
+
+.feature-band h2 { margin: 0 0 7px; font-size: 22px; }
+
+.feature-band p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  max-width: 650px;
+}
+
+.feature-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  background: #a75ce426;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.how {
+  padding: 20px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 15px;
+}
+
+.how .num {
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+
+.how h3 { font-size: 15px; margin: 10px 0 6px; }
+
+.how p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.65;
+}
+
+.support-intro {
+  max-width: 760px;
+  color: var(--muted);
+  margin-top: -5px;
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.support-card {
+  background: linear-gradient(145deg, #211a30, #181321);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 170px;
+}
+
+.support-icon { font-size: 25px; margin-bottom: 12px; }
+.support-card h3 { margin: 0 0 7px; font-size: 16px; }
+
+.support-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.support-panel {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid #8c54d855;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #251b35, #171321);
+}
+
+.support-panel h3 { margin: 0 0 5px; }
+
+.support-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.support-note {
+  font-size: 12px;
+  color: var(--soft);
+  margin-top: 12px;
+}
+
+footer {
+  border-top: 1px solid #ffffff12;
+  margin-top: 55px;
+  padding: 30px 0 45px;
+  color: var(--soft);
+  font-size: 12px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.notice {
+  font-size: 11px;
+  color: var(--soft);
+  margin-top: 13px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 150;
+  background: #292039;
+  border: 1px solid #765293;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: none;
+  max-width: min(400px, calc(100% - 40px));
+}
+
+.modal-backdrop, .auth-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #050309d9;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal {
+  width: min(700px, 100%);
+  max-height: 85vh;
+  overflow: auto;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.auth-dialog {
+  width: min(480px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+}
+
+.modal h2, .auth-dialog h2 { margin: 5px 0 10px; }
+
+.modal p, .auth-dialog p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.close {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: white;
+  border-radius: 9px;
+  padding: 7px 11px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.auth-field label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.auth-field input, .auth-field textarea, .auth-field select {
+  width: 100%;
+  background: #100d18;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--text);
+}
+
+.auth-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.auth-link {
+  border: 0;
+  background: none;
+  color: #d7b5ff;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.auth-status {
+  font-size: 12px;
+  color: var(--mint);
+  min-height: 18px;
+  margin-top: 8px;
+}
+
+.user-chip {
+  font-size: 12px;
+  color: var(--mint);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media(max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr .7fr; gap: 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .nav { gap: 15px; }
+}
+
+@media(max-width: 680px) {
+  .wrap { width: min(100% - 30px, var(--max)); }
+  .topbar { min-height: 66px; }
+  .nav { display: none; }
+  .hero { padding: 60px 0 35px; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-art { min-height: 230px; }
+  .portal { width: 170px; }
+  .float-one { left: 8%; top: 12px; }
+  .float-two { right: 8%; bottom: 12px; }
+  .grid, .how-grid, .support-grid { grid-template-columns: 1fr; }
+  .section { padding: 32px 0; }
+  .section-head { align-items: start; flex-direction: column; }
+  .feature-band { align-items: flex-start; flex-direction: column; }
+}
 </style>
 </head>
+
 <body>
+
 <header class="topbar">
   <div class="wrap top-inner">
-    <a class="brand" href="#home" aria-label="Cursed Portals home">
-      <span class="brand-mark">✦</span><span>CURSED PORTALS</span>
+    <a class="brand" href="#home">
+      <span class="brand-mark">✦</span>
+      <span>CURSED PORTALS</span>
     </a>
-    <nav class="nav" aria-label="Main navigation">
+
+    <nav class="nav">
       <a class="active" href="#home">Home</a>
       <a href="#explore">Explore</a>
       <a href="#library">Library</a>
-      <a href="#creators">Creators</a><a href="#support">Support</a>
+      <a href="#creators">Creators</a>
+      <a href="#support">Support</a>
       <a href="#about">About</a>
     </nav>
+
     <div class="actions">
       <span class="user-chip" id="userChip" hidden></span>
       <button class="btn" id="loginBtn" type="button">Sign in</button>
@@ -169,210 +808,558 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
 </header>
 
 <main id="home">
-  <section class="hero">
-    <div class="wrap hero-grid">
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">An independent creator platform</div>
+      <h1>A home for <span class="gradient">things worth creating.</span></h1>
+
+      <p class="hero-copy">
+        Discover projects, experiments, resources and ideas from independent creators.
+        Follow the work, explore the details, and find something new to bring into your world.
+      </p>
+
+      <div class="hero-ctas">
+        <a class="btn primary" href="#explore">Discover projects ↗</a>
+        <a class="btn" href="#creators">Meet the creators</a>
+      </div>
+
+      <div class="hero-note">
+        Free to explore. Built around projects and the people who make them.
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="portal"></div>
+      <div class="float-card float-one">
+        <strong>Explore freely</strong>
+        <span>Projects across disciplines</span>
+      </div>
+      <div class="float-card float-two">
+        <strong>Made by people</strong>
+        <span>Independent creative work</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="explore">
+  <div class="wrap">
+    <div class="section-head">
       <div>
-        <div class="eyebrow">An independent creator platform</div>
-        <h1>A home for <span class="gradient">things worth creating.</span></h1>
-        <p class="hero-copy">Discover projects, experiments, resources and ideas from independent creators. Follow the work, explore the details, and find something new to bring into your world.</p>
-        <div class="hero-ctas">
-          <a class="btn primary" href="#explore">Discover projects&nbsp; ↗</a>
-          <a class="btn" href="#creators">Meet the creators</a>
-        </div>
-        <div class="hero-note">Free to explore. Built around projects and the people who make them.</div>
+        <div class="eyebrow">Find your next rabbit hole</div>
+        <h2>Explore the platform</h2>
+        <p>Browse projects and discover new creators.</p>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="portal"></div>
-        <div class="float-card float-one"><strong>Explore freely</strong><span>Projects across disciplines</span></div>
-        <div class="float-card float-two"><strong>Made by people</strong><span>Independent creative work</span></div>
-      </div>
+      <a class="text-link" href="#library">Browse the library →</a>
     </div>
-  </section>
 
-  <section class="section" id="explore">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="eyebrow">Find your next rabbit hole</div><h2>Explore the platform</h2><p>Browse projects and discover new creators.</p></div>
-        <a class="text-link" href="#library">Browse the library →</a>
+    <div class="feature-band">
+      <div>
+        <h2>Not just a download page.</h2>
+        <p>
+          Every project can grow into its own space: with descriptions, updates,
+          resources, contributions, previews and a history of its development.
+        </p>
       </div>
-      <div class="feature-band">
-        <div>
-          <h2>Not just a download page.</h2>
-          <p>Every project can grow into its own space: with descriptions, updates, resources, contributions, previews and a history of its development.</p>
-        </div>
-        <div class="feature-icon">✧</div>
-      </div>
-      <div class="how-grid">
-        <article class="how"><div class="num">01 / DISCOVER</div><h3>Explore ideas</h3><p>Find projects by category, topic or creator. The library is designed for more than one kind of work.</p></article>
-        <article class="how"><div class="num">02 / GO DEEPER</div><h3>Follow each project</h3><p>See its story, updates, files, documentation and individual contributions in one place.</p></article>
-        <article class="how"><div class="num">03 / KEEP CLOSE</div><h3>Save what matters</h3><p>Accounts will let you save favorites, keep private notes and take part in shared project spaces.</p></article>
-      </div>
+      <div class="feature-icon">✧</div>
     </div>
-  </section>
 
-  <section class="section" id="library">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="eyebrow">The collection</div><h2>Project library</h2><p>All published public projects, in one place.</p></div>
+    <div class="how-grid">
+      <article class="how">
+        <div class="num">01 / DISCOVER</div>
+        <h3>Explore ideas</h3>
+        <p>Find projects by category, topic or creator. The library is designed for more than one kind of work.</p>
+      </article>
+
+      <article class="how">
+        <div class="num">02 / GO DEEPER</div>
+        <h3>Follow each project</h3>
+        <p>See its story, updates, files, documentation and individual contributions in one place.</p>
+      </article>
+
+      <article class="how">
+        <div class="num">03 / KEEP CLOSE</div>
+        <h3>Save what matters</h3>
+        <p>Accounts will let you save favorites, keep private notes and take part in shared project spaces.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="library">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The collection</div>
+        <h2>Project library</h2>
+        <p>All published public projects, in one place.</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <button class="btn primary" id="createProjectBtn" type="button" hidden>
+          ＋ Create project
+        </button>
         <span class="text-link" id="projectCount">Loading…</span>
       </div>
-      <div class="toolbar">
-        <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search projects, descriptions…" aria-label="Search projects"></label>
-        <select id="sortSelect" aria-label="Sort projects">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="az">Title A–Z</option>
-        </select>
-      </div>
-      <div class="chips" id="categoryFilters"><button class="chip active" data-category="all">All projects</button></div>
-      <div class="grid" id="projectGrid">
-        <div class="empty"><strong>Opening the library…</strong>Fetching published projects.</div>
-      </div>
-      <p class="notice">Projects shown here are retrieved from the Cursed Portals API. Only public, published projects are displayed.</p>
     </div>
-  </section>
 
-  <section class="section" id="creators">
-    <div class="wrap">
-      <div class="section-head">
-        <div><div class="eyebrow">The people behind the work</div><h2>For creators, not just content</h2><p>A platform where projects have room to develop.</p></div>
-      </div>
-      <div class="feature-band">
-        <div>
-          <h2>Have something you're building?</h2>
-          <p>The platform is being designed for its owner, admins and approved creators to publish and manage projects. Public exploration and access to published content will remain free.</p>
-          <p class="notice">Creator applications and publishing permissions will be enabled when the account and approval workflow is connected.</p>
-        </div>
-        <div class="feature-icon">✦</div>
+    <div class="toolbar">
+      <label class="search">
+        <span>⌕</span>
+        <input id="searchInput" type="search"
+          placeholder="Search projects, descriptions…"
+          aria-label="Search projects">
+      </label>
+
+      <select id="sortSelect" aria-label="Sort projects">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="az">Title A–Z</option>
+      </select>
+    </div>
+
+    <div class="chips" id="categoryFilters">
+      <button class="chip active" data-category="all">All projects</button>
+    </div>
+
+    <div class="grid" id="projectGrid">
+      <div class="empty">
+        <strong>Opening the library…</strong>
+        Fetching published projects.
       </div>
     </div>
-  </section>
 
-  
+    <p class="notice">
+      Projects shown here are retrieved from the Cursed Portals API.
+      Only public, published projects are displayed.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="creators">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The people behind the work</div>
+        <h2>For creators, not just content</h2>
+        <p>A platform where projects have room to develop.</p>
+      </div>
+    </div>
+
+    <div class="feature-band">
+      <div>
+        <h2>Have something you're building?</h2>
+        <p>
+          The platform is being designed for its owner, admins and approved creators
+          to publish and manage projects. Public exploration and access to published
+          content will remain free.
+        </p>
+        <p class="notice">
+          Creator applications and publishing permissions will be enabled when
+          the account and approval workflow is connected.
+        </p>
+      </div>
+      <div class="feature-icon">✦</div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="support">
   <div class="wrap">
     <div class="eyebrow">A community that gives back</div>
     <h2>Support creators.<br><span class="gradient">No money required.</span></h2>
-    <p class="support-intro">Great work grows when people appreciate it, share it, test it, improve it and help creators find collaborators. Support on this platform is about meaningful participation—not payments.</p>
+
+    <p class="support-intro">
+      Great work grows when people appreciate it, share it, test it, improve it
+      and help creators find collaborators. Support on this platform is about
+      meaningful participation—not payments.
+    </p>
+
     <div class="support-grid">
-      <article class="support-card"><div class="support-icon">♡</div><h3>Appreciate</h3><p>Like a project, send a thank-you, and let creators know their work matters.</p></article>
-      <article class="support-card"><div class="support-icon">↗</div><h3>Spread the word</h3><p>Share projects and recommend creators to people who may enjoy their work.</p></article>
-      <article class="support-card"><div class="support-icon">✎</div><h3>Give feedback</h3><p>Offer thoughtful suggestions, answer questions and help improve a project.</p></article>
-      <article class="support-card"><div class="support-icon">⌕</div><h3>Test and report</h3><p>Try projects, identify bugs and provide clear steps to reproduce problems.</p></article>
-      <article class="support-card"><div class="support-icon">⚒</div><h3>Collaborate</h3><p>Help with translations, documentation, artwork, tutorials or development.</p></article>
-      <article class="support-card"><div class="support-icon">✧</div><h3>Recognize effort</h3><p>Follow creators and celebrate useful contributions with opt-in recognition.</p></article>
+      <article class="support-card">
+        <div class="support-icon">♡</div>
+        <h3>Appreciate</h3>
+        <p>Like a project, send a thank-you, and let creators know their work matters.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="support-icon">↗</div>
+        <h3>Spread the word</h3>
+        <p>Share projects and recommend creators to people who may enjoy their work.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="support-icon">✎</div>
+        <h3>Give feedback</h3>
+        <p>Offer thoughtful suggestions, answer questions and help improve a project.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="support-icon">⌕</div>
+        <h3>Test and report</h3>
+        <p>Try projects, identify bugs and provide clear steps to reproduce problems.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="support-icon">⚒</div>
+        <h3>Collaborate</h3>
+        <p>Help with translations, documentation, artwork, tutorials or development.</p>
+      </article>
+
+      <article class="support-card">
+        <div class="support-icon">✧</div>
+        <h3>Recognize effort</h3>
+        <p>Follow creators and celebrate useful contributions with opt-in recognition.</p>
+      </article>
     </div>
+
     <div class="support-panel">
       <h3>Creators can ask for the help they actually need</h3>
-      <p>Each creator profile can feature a “How you can help me” list—for example, testers, translators, documentation help or collaborators. Creators choose what to request, and supporters choose whether their activity is public.</p>
+      <p>
+        Each creator profile can feature a “How you can help me” list—for example,
+        testers, translators, documentation help or collaborators. Creators choose
+        what to request, and supporters choose whether their activity is public.
+      </p>
     </div>
   </div>
 </section>
 
 <section class="section" id="about">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">The idea</div><h2>One home. Many kinds of work.</h2><p>Mods, software, tools, art, experiments, writing, resources and whatever comes next.</p></div></div>
-      <p style="max-width:780px;color:var(--muted);line-height:1.85">Cursed Portals is an independent project and creator library. It is not limited to one game, medium or subject. Each creator can build a home for their work, publish updates and organize related content. The platform is free to browse and use; payments and memberships are intentionally not part of this first version.</p>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The idea</div>
+        <h2>One home. Many kinds of work.</h2>
+        <p>Mods, software, tools, art, experiments, writing, resources and whatever comes next.</p>
+      </div>
     </div>
-  </section>
+
+    <p style="max-width:780px;color:var(--muted);line-height:1.85">
+      Cursed Portals is an independent project and creator library.
+      It is not limited to one game, medium or subject. Each creator can build
+      a home for their work, publish updates and organize related content.
+      The platform is free to browse and use; payments and memberships are
+      intentionally not part of this first version.
+    </p>
+  </div>
+</section>
+
 </main>
 
 <footer>
   <div class="wrap footer-inner">
-    <div><strong style="color:var(--text);letter-spacing:.12em">CURSED PORTALS</strong><div>Independent projects. Shared curiosity.</div></div>
+    <div>
+      <strong style="color:var(--text);letter-spacing:.12em">CURSED PORTALS</strong>
+      <div>Independent projects. Shared curiosity.</div>
+    </div>
     <div>© <span id="year"></span> Cursed Portals</div>
   </div>
 </footer>
 
 <div class="toast" id="toast" role="status"></div>
-<div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+<!-- Project details modal -->
+<div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true">
   <div class="modal">
     <div class="modal-top">
-      <div><div class="eyebrow">Project details</div><h2 id="modalTitle"></h2></div>
-      <button class="close" id="closeModal" type="button" aria-label="Close">✕</button>
+      <div>
+        <div class="eyebrow">Project details</div>
+        <h2 id="modalTitle"></h2>
+      </div>
+      <button class="close" id="closeModal" type="button">✕</button>
     </div>
     <div id="modalContent"></div>
   </div>
 </div>
 
+<!-- Project creation modal -->
+<div class="modal-backdrop" id="createProjectModal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="eyebrow">Administrator publishing</div>
+        <h2>Create a project</h2>
+      </div>
+      <button class="close" id="createProjectClose" type="button">✕</button>
+    </div>
 
-<div class="auth-backdrop" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <p>Publish a project to the Cursed Portals library, or save it as a draft.</p>
+
+    <form id="createProjectForm">
+      <div class="auth-field">
+        <label for="projectTitleInput">Project name</label>
+        <input id="projectTitleInput" maxlength="120" required
+          placeholder="Your project name">
+      </div>
+
+      <div class="auth-field">
+        <label for="projectSlugInput">URL slug (optional)</label>
+        <input id="projectSlugInput" maxlength="90"
+          placeholder="generated-from-project-name">
+      </div>
+
+      <div class="auth-field">
+        <label for="projectDescriptionInput">Description</label>
+        <textarea id="projectDescriptionInput" rows="5" maxlength="10000"
+          placeholder="What is this project about?"></textarea>
+      </div>
+
+      <div class="auth-field">
+        <label for="projectCategoryInput">Category</label>
+        <select id="projectCategoryInput">
+          <option value="">No category</option>
+        </select>
+      </div>
+
+      <div class="auth-field">
+        <label for="projectVisibilityInput">Visibility</label>
+        <select id="projectVisibilityInput">
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+
+      <div class="auth-field">
+        <label for="projectCoverInput">Cover image URL (optional)</label>
+        <input id="projectCoverInput" type="url" placeholder="https://…">
+      </div>
+
+      <label style="display:flex;gap:10px;align-items:center;margin:14px 0">
+        <input id="projectPublishInput" type="checkbox" checked>
+        Publish immediately
+      </label>
+
+      <p id="createProjectStatus" class="auth-status" role="status"></p>
+
+      <button class="btn primary" id="createProjectSubmit" type="submit">
+        Create project
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Authentication modal -->
+<div class="auth-backdrop" id="authModal" role="dialog" aria-modal="true">
   <div class="auth-dialog">
     <div class="modal-top">
-      <div><div class="eyebrow">Your creator community account</div><h2 id="authTitle">Sign in</h2></div>
-      <button class="close" id="authClose" type="button" aria-label="Close">✕</button>
+      <div>
+        <div class="eyebrow">Your creator community account</div>
+        <h2 id="authTitle">Sign in</h2>
+      </div>
+      <button class="close" id="authClose" type="button">✕</button>
     </div>
-    <p id="authIntro">Sign in with an existing Cursed Portals account.</p>
+
+    <p id="authIntro">Sign in with your existing Cursed Portals account.</p>
+
     <form id="authForm">
-      <div class="auth-field"><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" required></div>
-      <div class="auth-field"><label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" minlength="6" required></div>
+      <div class="auth-field">
+        <label for="authEmail">Email</label>
+        <input id="authEmail" type="email" autocomplete="email" required>
+      </div>
+
+      <div class="auth-field">
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password"
+          autocomplete="current-password" minlength="6" required>
+      </div>
+
       <div class="auth-row">
         <button class="btn primary" id="authSubmit" type="submit">Sign in</button>
         <button class="btn" id="authModeToggle" type="button">Create account</button>
       </div>
-      <button class="auth-link" id="forgotPassword" type="button">Forgot password?</button>
+
+      <button class="auth-link" id="forgotPassword" type="button">
+        Forgot password?
+      </button>
+
       <div class="auth-status" id="authStatus" role="status"></div>
     </form>
-    <p class="support-note">Authentication is handled by your Cloudflare Worker. Supabase credentials remain server-side.</p>
+
+    <p class="support-note">
+      Authentication is handled by your Cloudflare Worker.
+      Supabase credentials remain server-side.
+    </p>
   </div>
 </div>
+
 <script>
 (() => {
   "use strict";
 
-  const API = "https://sparkling-feather-1f7c.lucas-necel.workers.dev"; // Cloudflare Worker API
-  const state = { projects: [], categories: [], category: "all", query: "", sort: "newest", supabase: null, session: null, profile: null, authMode: "signin" };
-  const $ = (selector) => document.querySelector(selector);
+  /* =========================================
+     CONFIGURATION
+  ========================================= */
+
+  const API =
+    "https://sparkling-feather-1f7c.lucas-necel.workers.dev";
+
+  const state = {
+    projects: [],
+    categories: [],
+    category: "all",
+    query: "",
+    sort: "newest",
+    session: null,
+    profile: null,
+    authMode: "signin"
+  };
+
+  const $ = selector => document.querySelector(selector);
+
+  /* =========================================
+     GENERAL HELPERS
+  ========================================= */
 
   function showToast(message) {
     const toast = $("#toast");
     toast.textContent = message;
     toast.style.display = "block";
+
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.style.display = "none", 3600);
+
+    showToast.timer = setTimeout(() => {
+      toast.style.display = "none";
+    }, 3600);
   }
 
-  function accessToken() { return state.session?.access_token || ""; }
+  function accessToken() {
+    return state.session?.access_token || "";
+  }
+
+  function normalizeSession(payload) {
+    if (!payload) return null;
+
+    const session = payload.session || payload;
+
+    if (!session.access_token || !session.refresh_token) {
+      return null;
+    }
+
+    return {
+      ...session,
+      user:
+        payload.user ||
+        session.user ||
+        state.session?.user ||
+        null
+    };
+  }
 
   function saveSession(session) {
     state.session = session || null;
+
     if (session?.access_token && session?.refresh_token) {
-      sessionStorage.setItem("cp_worker_session", JSON.stringify({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token,
-        expires_at: session.expires_at || (Math.floor(Date.now()/1000) + (session.expires_in || 3600)),
-        user: session.user || null
-      }));
-    } else sessionStorage.removeItem("cp_worker_session");
+      sessionStorage.setItem(
+        "cp_worker_session",
+        JSON.stringify({
+          access_token: session.access_token,
+          refresh_token: session.refresh_token,
+          expires_at:
+            session.expires_at ||
+            Math.floor(Date.now() / 1000) +
+            (session.expires_in || 3600),
+          user: session.user || null
+        })
+      );
+    } else {
+      sessionStorage.removeItem("cp_worker_session");
+    }
+
     refreshAccountUI();
   }
 
+  /* =========================================
+     CLOUDFLARE WORKER REQUEST HANDLER
+
+     This communicates with the supplied Worker.
+     No Supabase browser credentials are used.
+  ========================================= */
+
   async function workerFetch(path, options = {}, retry = true) {
-    const headers = { "Accept": "application/json", ...(options.headers || {}) };
-    if (accessToken()) headers.Authorization = "Bearer " + accessToken();
-    if (options.body && !headers["Content-Type"]) headers["Content-Type"] = "application/json";
-    const response = await fetch(API + path, { ...options, headers });
+    const headers = {
+      "Accept": "application/json",
+      ...(options.headers || {})
+    };
+
+    if (accessToken()) {
+      headers.Authorization = "Bearer " + accessToken();
+    }
+
+    if (options.body && !headers["Content-Type"]) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    let response;
+
+    try {
+      response = await fetch(API + path, {
+        ...options,
+        headers
+      });
+    } catch (error) {
+      throw new Error(
+        "Could not connect to the Cursed Portals Worker. " +
+        "Check that the Worker is deployed and that this page's " +
+        "origin is allowed by its CORS configuration."
+      );
+    }
+
     const payload = await response.json().catch(() => ({}));
-    if (response.status === 401 && retry && state.session?.refresh_token && !path.startsWith("/api/auth/")) {
+
+    if (
+      response.status === 401 &&
+      retry &&
+      state.session?.refresh_token &&
+      !path.startsWith("/api/auth/")
+    ) {
       try {
-        const refreshed = await workerFetch("/api/auth/refresh", {
-          method: "POST", body: JSON.stringify({ refresh_token: state.session.refresh_token })
-        }, false);
-        if (refreshed.access_token) {
-          saveSession(refreshed);
+        const refreshed = await workerFetch(
+          "/api/auth/refresh",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              refresh_token: state.session.refresh_token
+            })
+          },
+          false
+        );
+
+        const refreshedSession = normalizeSession(refreshed);
+
+        if (refreshedSession?.access_token) {
+          saveSession(refreshedSession);
           return workerFetch(path, options, false);
         }
-      } catch (_) { saveSession(null); }
+      } catch (_) {
+        saveSession(null);
+      }
     }
-    if (!response.ok) throw new Error(payload.error || `API request failed (${response.status})`);
+
+    if (!response.ok) {
+      throw new Error(
+        payload.error ||
+        payload.message ||
+        `API request failed (${response.status})`
+      );
+    }
+
     return payload;
   }
 
-  async function apiRequest(path, options = {}) { return workerFetch(path, options); }
-  async function apiGet(path) { return apiRequest(path); }
+  async function apiRequest(path, options = {}) {
+    return workerFetch(path, options);
+  }
+
+  async function apiGet(path) {
+    return apiRequest(path);
+  }
 
   function safeText(value, fallback = "") {
-    return typeof value === "string" && value.trim() ? value.trim() : fallback;
+    return typeof value === "string" && value.trim()
+      ? value.trim()
+      : fallback;
   }
 
   function dateValue(project) {
@@ -381,24 +1368,39 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
     return Number.isFinite(date) ? date : 0;
   }
 
+  /* =========================================
+     CATEGORY FILTERS
+  ========================================= */
+
   function renderCategories() {
     const container = $("#categoryFilters");
     container.replaceChildren();
 
     const all = document.createElement("button");
-    all.className = "chip" + (state.category === "all" ? " active" : "");
+    all.className =
+      "chip" + (state.category === "all" ? " active" : "");
     all.textContent = "All projects";
     all.dataset.category = "all";
+
     container.append(all);
 
     state.categories.forEach(category => {
       const button = document.createElement("button");
-      button.className = "chip" + (state.category === String(category.id) ? " active" : "");
+
+      button.className =
+        "chip" +
+        (state.category === String(category.id) ? " active" : "");
+
       button.textContent = safeText(category.name, "Category");
       button.dataset.category = String(category.id);
+
       container.append(button);
     });
   }
+
+  /* =========================================
+     PROJECT CARDS
+  ========================================= */
 
   function makeProjectCard(project) {
     const card = document.createElement("article");
@@ -406,18 +1408,24 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
 
     const cover = document.createElement("div");
     cover.className = "cover";
+
     if (project.cover_image_url) {
       const img = document.createElement("img");
+
       img.src = project.cover_image_url;
       img.alt = safeText(project.title, "Project cover");
       img.loading = "lazy";
+
       img.onerror = () => {
         img.remove();
+
         const placeholder = document.createElement("div");
         placeholder.className = "cover-placeholder";
         placeholder.textContent = "✧";
+
         cover.append(placeholder);
       };
+
       cover.append(img);
     } else {
       const placeholder = document.createElement("div");
@@ -429,119 +1437,190 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
     const label = document.createElement("span");
     label.className = "cover-label";
     label.textContent = "Free to explore";
+
     cover.append(label);
 
     const body = document.createElement("div");
     body.className = "card-body";
+
     const meta = document.createElement("div");
     meta.className = "card-meta";
     meta.textContent = safeText(project.category_name, "Project");
+
     const title = document.createElement("h3");
     title.textContent = safeText(project.title, "Untitled project");
+
     const description = document.createElement("p");
-    description.textContent = safeText(project.description, "Explore this project and its contributions.");
+    description.textContent = safeText(
+      project.description,
+      "Explore this project and its contributions."
+    );
+
     const foot = document.createElement("div");
     foot.className = "card-foot";
+
     const creator = document.createElement("span");
     creator.className = "creator";
+
     const avatar = document.createElement("span");
     avatar.className = "avatar";
-    avatar.textContent = safeText(project.creator_name, "C").charAt(0).toUpperCase();
+    avatar.textContent =
+      safeText(project.creator_name, "C").charAt(0).toUpperCase();
+
     const creatorName = document.createElement("span");
-    creatorName.textContent = safeText(project.creator_name, "Independent creator");
+    creatorName.textContent =
+      safeText(project.creator_name, "Independent creator");
+
     creator.append(avatar, creatorName);
+
     const open = document.createElement("button");
     open.className = "open-link";
     open.type = "button";
     open.textContent = "View project →";
     open.addEventListener("click", () => openProject(project));
+
     foot.append(creator, open);
     body.append(meta, title, description, foot);
     card.append(cover, body);
+
     return card;
   }
+
+  /* =========================================
+     PROJECT LIBRARY
+  ========================================= */
 
   function renderProjects() {
     const grid = $("#projectGrid");
     grid.replaceChildren();
 
     let projects = [...state.projects];
-    if (state.category !== "all") {
-      projects = projects.filter(project => String(project.category_id || "") === state.category);
-    }
 
-    const query = state.query.toLowerCase();
-    if (query) {
-      projects = projects.filter(project =>
-        [project.title, project.description, project.slug, project.creator_name]
-          .some(value => String(value || "").toLowerCase().includes(query))
+    if (state.category !== "all") {
+      projects = projects.filter(
+        project =>
+          String(project.category_id || "") === state.category
       );
     }
 
-    if (state.sort === "newest") projects.sort((a,b) => dateValue(b) - dateValue(a));
-    if (state.sort === "oldest") projects.sort((a,b) => dateValue(a) - dateValue(b));
-    if (state.sort === "az") projects.sort((a,b) => safeText(a.title).localeCompare(safeText(b.title)));
+    const query = state.query.toLowerCase();
 
-    $("#projectCount").textContent = `${projects.length} project${projects.length === 1 ? "" : "s"}`;
+    if (query) {
+      projects = projects.filter(project =>
+        [
+          project.title,
+          project.description,
+          project.slug,
+          project.creator_name
+        ].some(value =>
+          String(value || "").toLowerCase().includes(query)
+        )
+      );
+    }
+
+    if (state.sort === "newest") {
+      projects.sort((a, b) => dateValue(b) - dateValue(a));
+    }
+
+    if (state.sort === "oldest") {
+      projects.sort((a, b) => dateValue(a) - dateValue(b));
+    }
+
+    if (state.sort === "az") {
+      projects.sort((a, b) =>
+        safeText(a.title).localeCompare(safeText(b.title))
+      );
+    }
+
+    $("#projectCount").textContent =
+      `${projects.length} project${projects.length === 1 ? "" : "s"}`;
 
     if (!projects.length) {
       const empty = document.createElement("div");
       empty.className = "empty";
+
       const strong = document.createElement("strong");
-      strong.textContent = state.projects.length ? "No matching projects" : "The library is waiting for its first project";
+
+      strong.textContent = state.projects.length
+        ? "No matching projects"
+        : "The library is waiting for its first project";
+
       const message = document.createElement("span");
+
       message.textContent = state.projects.length
         ? "Try another search or category."
         : "Once a project is published through the admin tools, it will appear here automatically.";
+
       empty.append(strong, message);
       grid.append(empty);
       return;
     }
 
-    projects.forEach(project => grid.append(makeProjectCard(project)));
+    projects.forEach(project => {
+      grid.append(makeProjectCard(project));
+    });
   }
 
+  /* =========================================
+     PROJECT DETAILS
+  ========================================= */
+
   async function openProject(project) {
-    $("#modalTitle").textContent = safeText(project.title, "Project");
+    $("#modalTitle").textContent =
+      safeText(project.title, "Project");
+
     const content = $("#modalContent");
     content.replaceChildren();
 
     const description = document.createElement("p");
-    description.textContent = safeText(project.description, "No description has been added yet.");
+    description.textContent = safeText(
+      project.description,
+      "No description has been added yet."
+    );
+
     content.append(description);
 
     const supportPanel = document.createElement("div");
     supportPanel.className = "support-panel";
-    const supportHeading = document.createElement("h3");
-    supportHeading.textContent = "Support this creator";
-    const supportText = document.createElement("p");
-    supportText.textContent = "Cursed Portals is free to explore. Share this project to help others discover it.";
-    const supportActions = document.createElement("div");
-    supportActions.className = "support-actions";
 
-    const shareButton = document.createElement("button");
-    shareButton.type = "button";
-    shareButton.className = "support-action";
-    shareButton.textContent = "↗ Share project";
-    shareButton.dataset.supportAction = "share";
-    shareButton.dataset.projectId = project.id || "";
-    shareButton.dataset.projectTitle = safeText(project.title, "this project");
-    shareButton.dataset.creator = safeText(project.creator_name, "this creator");
-    supportActions.append(shareButton);
+    const heading = document.createElement("h3");
+    heading.textContent = "Support this creator";
 
-    const supportNote = document.createElement("div");
-    supportNote.className = "support-note";
-    supportNote.textContent = "Likes, creator follows, feedback, bug reports, and collaboration submissions will appear here when their Worker API routes are available.";
-    supportPanel.append(supportHeading, supportText, supportActions, supportNote);
+    const text = document.createElement("p");
+    text.textContent =
+      "Cursed Portals is free to explore. Share this project to help others discover it.";
+
+    const actions = document.createElement("div");
+    actions.className = "support-actions";
+
+    const share = document.createElement("button");
+    share.type = "button";
+    share.className = "btn";
+    share.textContent = "↗ Share project";
+    share.dataset.supportAction = "share";
+    share.dataset.projectTitle =
+      safeText(project.title, "this project");
+    share.dataset.creator =
+      safeText(project.creator_name, "this creator");
+
+    actions.append(share);
+
+    const note = document.createElement("div");
+    note.className = "support-note";
+    note.textContent =
+      "Likes, creator follows, feedback, bug reports and collaboration submissions will be connected when their API routes are available.";
+
+    supportPanel.append(heading, text, actions, note);
     content.append(supportPanel);
 
     const meta = document.createElement("p");
-    meta.textContent = `Project slug: ${safeText(project.slug, "Not set")}`;
+    meta.textContent =
+      `Project slug: ${safeText(project.slug, "Not set")}`;
+
     content.append(meta);
 
     $("#projectModal").style.display = "flex";
   }
-
 
   async function handleSupportAction(button) {
     const title = button.dataset.projectTitle || "this project";
@@ -557,13 +1636,17 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
       if (navigator.share) {
         await navigator.share(shareData);
       } else if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(shareData.text + " " + shareData.url);
+        await navigator.clipboard.writeText(
+          shareData.text + " " + shareData.url
+        );
         showToast("Project link copied.");
       } else {
         showToast("Copy this page's address to share the project.");
       }
     } catch (error) {
-      if (error?.name !== "AbortError") showToast("Sharing is unavailable.");
+      if (error?.name !== "AbortError") {
+        showToast("Sharing is unavailable.");
+      }
     }
   }
 
@@ -572,10 +1655,121 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
     if (button) handleSupportAction(button);
   });
 
+  /* =========================================
+     CREATE PROJECT — ADMIN ONLY
+  ========================================= */
+
+  function populateProjectCategoryOptions() {
+    const select = $("#projectCategoryInput");
+    select.replaceChildren();
+
+    const none = document.createElement("option");
+    none.value = "";
+    none.textContent = "No category";
+
+    select.append(none);
+
+    state.categories.forEach(category => {
+      const option = document.createElement("option");
+
+      option.value = category.id;
+      option.textContent = category.name || "Category";
+
+      select.append(option);
+    });
+  }
+
+  function openCreateProject() {
+    if (!state.session || state.profile?.role !== "admin") {
+      showToast("Administrator access required.");
+      return;
+    }
+
+    populateProjectCategoryOptions();
+
+    $("#createProjectStatus").textContent = "";
+    $("#createProjectModal").style.display = "flex";
+  }
+
+  $("#createProjectBtn").addEventListener(
+    "click",
+    openCreateProject
+  );
+
+  $("#createProjectClose").addEventListener("click", () => {
+    $("#createProjectModal").style.display = "none";
+  });
+
+  $("#createProjectModal").addEventListener("click", event => {
+    if (event.target.id === "createProjectModal") {
+      event.currentTarget.style.display = "none";
+    }
+  });
+
+  $("#createProjectForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!state.session || state.profile?.role !== "admin") {
+      $("#createProjectStatus").textContent =
+        "Administrator access required.";
+      return;
+    }
+
+    const submit = $("#createProjectSubmit");
+    const status = $("#createProjectStatus");
+
+    submit.disabled = true;
+    submit.textContent = "Creating…";
+    status.textContent = "";
+
+    const payload = {
+      title: $("#projectTitleInput").value.trim(),
+      slug: $("#projectSlugInput").value.trim(),
+      description: $("#projectDescriptionInput").value.trim(),
+      category_id: $("#projectCategoryInput").value || null,
+      visibility: $("#projectVisibilityInput").value,
+      cover_image_url: $("#projectCoverInput").value.trim() || null,
+      is_published: $("#projectPublishInput").checked
+    };
+
+    try {
+      await apiRequest("/api/projects", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      showToast(
+        payload.is_published
+          ? "Project published!"
+          : "Project saved as a draft."
+      );
+
+      $("#createProjectForm").reset();
+      $("#createProjectModal").style.display = "none";
+
+      await initialize();
+
+    } catch (error) {
+      status.textContent =
+        error.message || "Project creation failed.";
+
+      showToast(status.textContent);
+
+    } finally {
+      submit.disabled = false;
+      submit.textContent = "Create project";
+    }
+  });
+
+  /* =========================================
+     LOAD PROJECTS AND CATEGORIES
+  ========================================= */
+
   async function initialize() {
     $("#year").textContent = new Date().getFullYear();
 
-    $("#projectGrid").innerHTML = '<div class="empty"><strong>Loading projects…</strong>Connecting to the project library.</div>';
+    $("#projectGrid").innerHTML =
+      '<div class="empty"><strong>Loading projects…</strong>Connecting to the project library.</div>';
 
     const results = await Promise.allSettled([
       apiGet("/api/health"),
@@ -583,23 +1777,43 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
       apiGet("/api/categories")
     ]);
 
-    const workerOnline = results[0].status === "fulfilled" &&
+    const workerOnline =
+      results[0].status === "fulfilled" &&
       results[0].value?.status === "ok";
 
-    if (results[1].status === "fulfilled" && Array.isArray(results[1].value)) {
-      state.projects = results[1].value;
+    if (
+      results[1].status === "fulfilled" &&
+      Array.isArray(results[1].value?.projects)
+    ) {
+      state.projects = results[1].value.projects;
+
     } else {
-      $("#projectGrid").innerHTML = '<div class="empty"><strong>Could not load projects</strong>Please check the Worker connection and try again.</div>';
-      showToast(workerOnline ? "The Worker is online, but projects could not be loaded." : "The Cursed Portals Worker could not be reached.");
+      state.projects = [];
+
+      $("#projectGrid").innerHTML =
+        '<div class="empty"><strong>Could not load projects</strong>Check the Worker connection and try again.</div>';
+
+      showToast(
+        workerOnline
+          ? "The Worker is online, but projects could not be loaded."
+          : "The Cursed Portals Worker could not be reached."
+      );
     }
 
-    if (results[2].status === "fulfilled" && Array.isArray(results[2].value)) {
-      state.categories = results[2].value;
+    if (
+      results[2].status === "fulfilled" &&
+      Array.isArray(results[2].value?.categories)
+    ) {
+      state.categories = results[2].value.categories;
     }
 
     renderCategories();
     renderProjects();
   }
+
+  /* =========================================
+     SEARCH, SORT AND FILTER
+  ========================================= */
 
   $("#searchInput").addEventListener("input", event => {
     state.query = event.target.value;
@@ -614,15 +1828,26 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
   $("#categoryFilters").addEventListener("click", event => {
     const button = event.target.closest("[data-category]");
     if (!button) return;
+
     state.category = button.dataset.category;
+
     renderCategories();
     renderProjects();
   });
 
-  $("#closeModal").addEventListener("click", () => $("#projectModal").style.display = "none");
-  $("#projectModal").addEventListener("click", event => {
-    if (event.target.id === "projectModal") event.currentTarget.style.display = "none";
+  $("#closeModal").addEventListener("click", () => {
+    $("#projectModal").style.display = "none";
   });
+
+  $("#projectModal").addEventListener("click", event => {
+    if (event.target.id === "projectModal") {
+      event.currentTarget.style.display = "none";
+    }
+  });
+
+  /* =========================================
+     AUTHENTICATION UI
+  ========================================= */
 
   function setAuthStatus(message, isError = false) {
     const node = $("#authStatus");
@@ -632,112 +1857,283 @@ footer{border-top:1px solid #ffffff12;margin-top:55px;padding:30px 0 45px;color:
 
   function refreshAccountUI() {
     const email = state.session?.user?.email || "";
+
     $("#loginBtn").textContent = email ? "Sign out" : "Sign in";
+
     $("#userChip").hidden = !email;
-    $("#userChip").textContent = state.profile?.display_name || state.profile?.username || email;
+
+    $("#userChip").textContent =
+      state.profile?.display_name ||
+      state.profile?.username ||
+      email;
+
+    $("#createProjectBtn").hidden =
+      !(email && state.profile?.role === "admin");
   }
 
   async function loadMyProfile() {
-    if (!accessToken()) { state.profile = null; refreshAccountUI(); return; }
+    if (!accessToken()) {
+      state.profile = null;
+      refreshAccountUI();
+      return;
+    }
+
     try {
       const result = await apiRequest("/api/me");
+
       state.profile = result?.profile || null;
+
       if (result?.user && state.session) {
         state.session.user = result.user;
-        sessionStorage.setItem("cp_worker_session", JSON.stringify(state.session));
+
+        sessionStorage.setItem(
+          "cp_worker_session",
+          JSON.stringify(state.session)
+        );
       }
+
       refreshAccountUI();
+
     } catch (error) {
-      if (error.message.includes("Authentication") || error.message.includes("401")) {
-        saveSession(null); state.profile = null;
-      } else console.warn("Profile lookup failed:", error);
+      if (
+        error.message.includes("Authentication") ||
+        error.message.includes("401")
+      ) {
+        saveSession(null);
+        state.profile = null;
+      } else {
+        console.warn("Profile lookup failed:", error);
+      }
     }
   }
 
   function openAuth() {
     $("#authModal").style.display = "flex";
     $("#authStatus").textContent = "";
-    $("#authTitle").textContent = state.authMode === "signup" ? "Create account" : "Sign in";
-    $("#authIntro").textContent = state.authMode === "signup"
-      ? "Create an account on Cursed Portals."
-      : "Sign in with your existing Cursed Portals account.";
-    $("#authSubmit").textContent = state.authMode === "signup" ? "Create account" : "Sign in";
-    $("#authModeToggle").textContent = state.authMode === "signup" ? "I already have an account" : "Create account";
-    $("#authPassword").autocomplete = state.authMode === "signup" ? "new-password" : "current-password";
+
+    $("#authTitle").textContent =
+      state.authMode === "signup"
+        ? "Create account"
+        : "Sign in";
+
+    $("#authIntro").textContent =
+      state.authMode === "signup"
+        ? "Create an account on Cursed Portals."
+        : "Sign in with your existing Cursed Portals account.";
+
+    $("#authSubmit").textContent =
+      state.authMode === "signup"
+        ? "Create account"
+        : "Sign in";
+
+    $("#authModeToggle").textContent =
+      state.authMode === "signup"
+        ? "I already have an account"
+        : "Create account";
+
+    $("#authPassword").autocomplete =
+      state.authMode === "signup"
+        ? "new-password"
+        : "current-password";
   }
+
+  /* =========================================
+     SIGN IN / SIGN OUT
+  ========================================= */
 
   $("#loginBtn").addEventListener("click", async () => {
     if (state.session) {
-      try { await apiRequest("/api/auth/logout", { method: "POST", body: "{}" }); } catch (_) {}
-      saveSession(null); state.profile = null;
+      try {
+        await apiRequest("/api/auth/logout", {
+          method: "POST",
+          body: "{}"
+        });
+      } catch (_) {}
+
+      saveSession(null);
+      state.profile = null;
+
       showToast("You have signed out.");
-    } else openAuth();
+
+    } else {
+      openAuth();
+    }
   });
-  $("#authClose").addEventListener("click", () => $("#authModal").style.display = "none");
+
+  $("#authClose").addEventListener("click", () => {
+    $("#authModal").style.display = "none";
+  });
+
   $("#authModal").addEventListener("click", event => {
-    if (event.target.id === "authModal") event.currentTarget.style.display = "none";
+    if (event.target.id === "authModal") {
+      event.currentTarget.style.display = "none";
+    }
   });
+
   $("#authModeToggle").addEventListener("click", () => {
-    state.authMode = state.authMode === "signup" ? "signin" : "signup";
+    state.authMode =
+      state.authMode === "signup"
+        ? "signin"
+        : "signup";
+
     openAuth();
   });
 
+  /* =========================================
+     SIGN IN / SIGN UP REQUESTS
+  ========================================= */
+
   $("#authForm").addEventListener("submit", async event => {
     event.preventDefault();
+
     setAuthStatus("");
+
     const email = $("#authEmail").value.trim();
     const password = $("#authPassword").value;
-    const endpoint = state.authMode === "signup" ? "/api/auth/signup" : "/api/auth/login";
+
+    const endpoint =
+      state.authMode === "signup"
+        ? "/api/auth/signup"
+        : "/api/auth/login";
+
     try {
       const result = await workerFetch(endpoint, {
-        method: "POST", body: JSON.stringify({ email, password })
+        method: "POST",
+        body: JSON.stringify({ email, password })
       }, false);
-      if (result.access_token && result.refresh_token) {
-        saveSession(result);
+
+      const session = normalizeSession(result);
+
+      if (session) {
+        saveSession(session);
+
         await loadMyProfile();
+
         $("#authModal").style.display = "none";
-        showToast(state.authMode === "signup" ? "Your account is ready." : "Welcome back!");
+
+        showToast(
+          state.authMode === "signup"
+            ? "Your account is ready."
+            : "Welcome back!"
+        );
+
       } else if (state.authMode === "signup") {
-        setAuthStatus("Account created. Check your email to confirm it, then sign in.");
-      } else throw new Error("Worker did not return a login session. Check its authentication route.");
-    } catch (error) { setAuthStatus(error.message || "Authentication failed.", true); }
+        setAuthStatus(
+          "Account created. Check your email to confirm it, then sign in."
+        );
+
+      } else {
+        throw new Error(
+          "Worker did not return a login session. Check its authentication route."
+        );
+      }
+
+    } catch (error) {
+      setAuthStatus(
+        error.message || "Authentication failed.",
+        true
+      );
+    }
   });
+
+  /* =========================================
+     PASSWORD RESET
+  ========================================= */
 
   $("#forgotPassword").addEventListener("click", async () => {
     const email = $("#authEmail").value.trim();
-    if (!email) { setAuthStatus("Enter your email address first.", true); return; }
+
+    if (!email) {
+      setAuthStatus("Enter your email address first.", true);
+      return;
+    }
+
     try {
       await workerFetch("/api/auth/reset-password", {
-        method: "POST", body: JSON.stringify({ email, redirect_to: location.href.split("#")[0] })
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          redirect_to: location.href.split("#")[0]
+        })
       }, false);
-      setAuthStatus("Password reset email requested. Check your inbox.");
-    } catch (error) { setAuthStatus(error.message, true); }
+
+      setAuthStatus(
+        "Password reset email requested. Check your inbox."
+      );
+
+    } catch (error) {
+      setAuthStatus(error.message, true);
+    }
   });
+
+  /* =========================================
+     RESTORE EXISTING SESSION
+  ========================================= */
 
   async function restoreWorkerSession() {
     try {
       const raw = sessionStorage.getItem("cp_worker_session");
-      if (!raw) { refreshAccountUI(); return; }
+
+      if (!raw) {
+        refreshAccountUI();
+        return;
+      }
+
       const saved = JSON.parse(raw);
-      if (!saved.refresh_token) { saveSession(null); return; }
-      if (saved.expires_at && saved.expires_at < Math.floor(Date.now()/1000) + 30) {
-        const refreshed = await workerFetch("/api/auth/refresh", {
-          method: "POST", body: JSON.stringify({ refresh_token: saved.refresh_token })
-        }, false);
-        saveSession(refreshed);
+
+      if (!saved.refresh_token) {
+        saveSession(null);
+        return;
+      }
+
+      if (
+        saved.expires_at &&
+        saved.expires_at < Math.floor(Date.now() / 1000) + 30
+      ) {
+        const refreshed = await workerFetch(
+          "/api/auth/refresh",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              refresh_token: saved.refresh_token
+            })
+          },
+          false
+        );
+
+        const refreshedSession = normalizeSession(refreshed);
+
+        if (!refreshedSession) {
+          throw new Error(
+            "Session refresh did not return valid tokens."
+          );
+        }
+
+        saveSession(refreshedSession);
+
       } else {
         state.session = saved;
         refreshAccountUI();
       }
+
       await loadMyProfile();
+
     } catch (error) {
       saveSession(null);
       console.warn("Could not restore session:", error);
     }
   }
 
-  restoreWorkerSession().finally(() => initialize());
+  /* =========================================
+     START APPLICATION
+  ========================================= */
+
+  restoreWorkerSession().finally(() => {
+    initialize();
+  });
+
 })();
 </script>
+
 </body>
 </html>
